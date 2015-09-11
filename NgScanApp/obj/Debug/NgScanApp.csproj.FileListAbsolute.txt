@@ -1,0 +1,16 @@
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\bin\Debug\NgScanApp.exe.config
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\bin\Debug\NgScanApp.exe
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\bin\Debug\NgScanApp.pdb
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.csprojResolveAssemblyReference.cache
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\MainWindow.g.cs
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\App.g.cs
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp_MarkupCompile.cache
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp_MarkupCompile.lref
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\MainWindow.baml
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.g.resources
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.Properties.Resources.resources
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.csproj.GenerateResource.Cache
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.exe
+c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.pdb
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\Interop.WIA.dll
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.csproj.ResolveComReference.cache

@@ -1,0 +1,20 @@
+﻿<Window x:Name="NgScanApp" x:Class="NgScanApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NgScanApp"
+        mc:Ignorable="d"
+        Title="NgScanApp" Height="600" Width="1024">
+    <Grid Background="Black">
+        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="200" Background="#FF191919">
+            <Button x:Name="ScanBtn" Content="Scan" HorizontalAlignment="Center" Margin="24,54,0,0" VerticalAlignment="Top" Width="75" Click="ScanBtn_Clicked"/>
+            <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Center" Margin="75,0,50,37" VerticalAlignment="Bottom" Width="75"/>
+            <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Left" Margin="53,146,0,0" VerticalAlignment="Top" Width="120"/>
+        </Grid>
+        <Grid x:Name="GridL" Margin="0,0,200,0">
+            <Image x:Name="ScanView"/>
+        </Grid>
+
+    </Grid>
+</Window>
