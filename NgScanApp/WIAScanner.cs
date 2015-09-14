@@ -143,13 +143,34 @@ namespace NgScanApp
         /// Gets the list of available WIA devices.
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetDevices()
+        public static List<string> GetDevicesId()
         {
             List<string> devices = new List<string>();
             WIA.DeviceManager manager = new WIA.DeviceManager();
             foreach (WIA.DeviceInfo info in manager.DeviceInfos)
             {
                 devices.Add(info.DeviceID);
+            }
+            return devices;
+        }
+        public static List<string> GetDevices()
+        {
+            string deviceName = "";
+            List<string> devices = new List<string>();
+            WIA.DeviceManager manager = new WIA.DeviceManager();
+            foreach (WIA.DeviceInfo info in manager.DeviceInfos)
+            {
+                if(info.Type == WIA.WiaDeviceType.ScannerDeviceType)
+                {
+                    foreach(WIA.Property p in info.Properties)
+                    {
+                        if(p.Name == "Name")
+                        {
+                            deviceName = ((WIA.IProperty)p).get_Value().ToString();
+                            devices.Add(deviceName);
+                        }
+                    }
+                }
             }
             return devices;
         }

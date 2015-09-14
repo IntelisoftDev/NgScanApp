@@ -11,6 +11,7 @@
             <Button x:Name="ScanBtn" Content="Scan" HorizontalAlignment="Center" Margin="24,54,0,0" VerticalAlignment="Top" Width="75" Click="ScanBtn_Clicked"/>
             <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Center" Margin="75,0,50,37" VerticalAlignment="Bottom" Width="75"/>
             <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Left" Margin="53,146,0,0" VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
         </Grid>
         <Grid x:Name="GridL" Margin="0,0,200,0">
             <Image x:Name="ScanView"/>
