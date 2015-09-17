@@ -14,3 +14,5 @@ c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp
 c:\users\vidar.edocny2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.pdb
 C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\Interop.WIA.dll
 C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\NgScanApp.csproj.ResolveComReference.cache
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\DevSettings.g.cs
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\DevSettings.baml

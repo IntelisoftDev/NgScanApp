@@ -61,7 +61,6 @@ namespace NgScanApp
                 if(DeviceCmb.Items.Count == 0)
                 {
                     MessageBox.Show("Please connect a scanner.");
-                    //this.Close();
                 }
                 List<System.Drawing.Image> images = WIAScanner.Scan((string)DeviceIdCmb.SelectedItem);
                 foreach(System.Drawing.Image image in images)
@@ -71,7 +70,7 @@ namespace NgScanApp
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         BitmapSource convImage(System.Drawing.Image imageData)
@@ -86,6 +85,12 @@ namespace NgScanApp
                 bI.EndInit();
                 return bI;
             }
+        }
+
+        private void onSettingsCliked(object sender, RoutedEventArgs e)
+        {
+            DevSettings m_devSettings = new DevSettings();
+            m_devSettings.Show();
         }
     }
 }

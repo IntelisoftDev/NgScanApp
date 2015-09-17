@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="NgScanApp" Height="600" Width="1024">
+        Title="NgScanApp" Height="600" Width="1024" WindowState="Maximized">
     <Grid Background="Black">
-        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="200" Background="#FF191919">
-            <Button x:Name="ScanBtn" Content="Scan" HorizontalAlignment="Center" Margin="24,54,0,0" VerticalAlignment="Top" Width="75" Click="ScanBtn_Clicked"/>
-            <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Center" Margin="75,0,50,37" VerticalAlignment="Bottom" Width="75"/>
-            <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Left" Margin="53,146,0,0" VerticalAlignment="Top" Width="120"/>
+        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="281" Background="#FF191919">
+            <Button x:Name="ScanBtn" Content="Scan" HorizontalAlignment="Center" Margin="104,54,102,0" VerticalAlignment="Top" Width="75" Click="ScanBtn_Clicked"/>
+            <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Center" Margin="108,0,97,37" VerticalAlignment="Bottom" Width="76" Click="onSettingsCliked"/>
+            <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="0,123,0,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="#FFE5E5E5"/>
             <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
         </Grid>
-        <Grid x:Name="GridL" Margin="0,0,200,0">
+        <Grid x:Name="GridL" Margin="0,0,286,0">
             <Image x:Name="ScanView"/>
         </Grid>
 
