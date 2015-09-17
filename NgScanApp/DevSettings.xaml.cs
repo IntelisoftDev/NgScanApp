@@ -26,8 +26,7 @@ namespace NgScanApp
 
         private void concelBtnClicked(object sender, RoutedEventArgs e)
         {
-            DevSettings m_devSettings = new DevSettings();
-            m_devSettings.Close();
+            this.Close();
         }
     }
 }
