@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="Settings" Height="500" Width="428">
     <Grid Margin="0,0,2,2" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-        <StackPanel HorizontalAlignment="Right" Height="31" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="135" Orientation="Horizontal">
-            <Button x:Name="okBtn" Content="Ok" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="23" Height="19" Margin="5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
-            <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="38" Height="19" Margin="0,0,5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+        <StackPanel HorizontalAlignment="Right" Height="31" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="164" Orientation="Horizontal">
+            <Button x:Name="okBtn" Content="Ok" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="46" Height="19" Margin="5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+            <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="46" Height="19" Margin="0,0,5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
             <Button x:Name="cancelBtn" Content="Cancel" Width="46" Margin="0,12,0,0" Click="concelBtnClicked" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
         </StackPanel>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="411" Margin="10,10,0,0" VerticalAlignment="Top" Width="398">
