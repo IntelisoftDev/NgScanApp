@@ -5,19 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="Settings" Height="500" Width="428">
+        Title="Settings" Height="500" Width="465.076">
     <Grid Margin="0,0,2,2" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <StackPanel HorizontalAlignment="Right" Height="31" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="164" Orientation="Horizontal">
             <Button x:Name="okBtn" Content="Ok" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="46" Height="19" Margin="5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
             <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="46" Height="19" Margin="0,0,5,0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
             <Button x:Name="cancelBtn" Content="Cancel" Width="46" Margin="0,12,0,0" Click="concelBtnClicked" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
         </StackPanel>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="411" Margin="10,10,0,0" VerticalAlignment="Top" Width="398">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="411" Margin="10,15,0,0" VerticalAlignment="Top" Width="445">
             <TabItem Header="General">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="-6,0,4,0"/>
             </TabItem>
             <TabItem Header="Brightness">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid Height="149" Margin="110,10,17,0" VerticalAlignment="Top" Width="313">
+                        <Label x:Name="label0" Content="Brightness" Margin="0,0,0,20"/>
+                        <Slider x:Name="slider" Margin="10,26,154,104" Background="{x:Null}" Foreground="{x:Null}">
+                            <Slider.Resources>
+                                <SolidColorBrush x:Key="SliderSelectionBackground" Color="Green" />
+                                <SolidColorBrush x:Key="SliderSelectionBorder" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBackground" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBackgroundDisabled" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBackgroundDragging" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBackgroundHover" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBorder" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBorderDisabled" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBorderDragging" Color="Green" />
+                                <SolidColorBrush x:Key="SliderThumbBorderHover" Color="Green" />
+                            </Slider.Resources>
+                        </Slider>
+                        <TextBox x:Name="textBox" Height="20" TextWrapping="Wrap" Text="100" Margin="194,25,89,104" Width="30" RenderTransformOrigin="1.212,-0.568"/>
+                        <Label x:Name="label1" Content="Contrast" Margin="0,53,237,0" Height="24" VerticalAlignment="Top"/>
+                        <Slider x:Name="slider1" Margin="10,87,154,42"/>
+                        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="194,87,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.722,-0.329"/>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
 
