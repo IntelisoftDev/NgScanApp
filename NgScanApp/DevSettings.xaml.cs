@@ -28,5 +28,15 @@ namespace NgScanApp
         {
             this.Close();
         }
+
+        private void applyClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void okClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
