@@ -54,3 +54,5 @@ C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\NgScanAp
 C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\NgScanApp.csproj.GenerateResource.Cache
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.g.cs
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.baml
+C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.g.cs
+C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.baml
