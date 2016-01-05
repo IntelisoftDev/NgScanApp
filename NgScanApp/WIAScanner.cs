@@ -38,17 +38,110 @@ namespace NgScanApp
             public const uint WIA_DPS_DOCUMENT_HANDLING_STATUS = WIA_DPS_FIRST + 13;
             public const uint WIA_DPS_DOCUMENT_HANDLING_SELECT = WIA_DPS_FIRST + 14;
         }
+
+        public static List<System.Drawing.Image> preScan()
+        {
+            WIA.ICommonDialog dialog = new WIA.CommonDialog();
+            WIA.Device device = dialog.ShowSelectDevice(WIA.WiaDeviceType.UnspecifiedDeviceType, true, false);
+            if(device != null)
+            {
+                return preScan(device.DeviceID);
+            }
+            else
+            {
+                throw new Exception("You must select a device for scanning.");
+            }
+        }
+
+        public static List<System.Drawing.Image> preScan(string scannerId)
+        {
+            List<System.Drawing.Image> images = new List<System.Drawing.Image>();
+            bool hasMorePages = true;
+            while (hasMorePages)
+            {
+                WIA.DeviceManager manager = new WIA.DeviceManager();
+                WIA.Device device = null;
+
+                foreach(WIA.DeviceInfo info in manager.DeviceInfos)
+                {
+                    if(info.DeviceID == scannerId)
+                    {
+                        device = info.Connect();
+                        break;
+                    }
+                }
+                if(device == null)
+                {
+                    string availableDevices = "";
+                    foreach (WIA.DeviceInfo info in manager.DeviceInfos)
+                    {
+                        availableDevices += info.DeviceID + "\n";
+                    }
+
+                    // show error with available devices
+                    throw new Exception("The device with provided ID could not be found. Available Devices:\n" + availableDevices);
+                }
+                WIA.Item item = device.Items[1] as WIA.Item;
+                try
+                {
+                    WIA.ICommonDialog wiaCommonDialog = new WIA.CommonDialog();
+                    WIA.ImageFile image = (WIA.ImageFile)wiaCommonDialog.ShowTransfer(item, wiaFormatBMP, false);
+                    // save to temp file
+                    string fileName = Path.GetTempFileName();
+                    File.Delete(fileName);
+                    image.SaveFile(fileName);
+                    image = null;
+                    // add file to output list
+                    images.Add(System.Drawing.Image.FromFile(fileName));
+                }
+                catch (Exception exc)
+                {
+                    throw exc;
+                }
+                finally
+                {
+                    item = null;
+                }
+                item = null;
+                //determine if there are any more pages waiting
+                WIA.Property documentHandlingSelect = null;
+                WIA.Property documentHandlingStatus = null;
+                foreach (WIA.Property prop in device.Properties)
+                {
+                    if (prop.PropertyID == WIA_PROPERTIES.WIA_DPS_DOCUMENT_HANDLING_SELECT)
+                        documentHandlingSelect = prop;
+                    if (prop.PropertyID == WIA_PROPERTIES.WIA_DPS_DOCUMENT_HANDLING_STATUS)
+                        documentHandlingStatus = prop;
+                }
+                // assume there are no more pages
+                hasMorePages = false;
+                // may not exist on flatbed scanner but required for feeder
+                if (documentHandlingSelect != null)
+                {
+                    // check for document feeder
+                    if ((Convert.ToUInt32(documentHandlingSelect.get_Value()) &
+                    WIA_DPS_DOCUMENT_HANDLING_SELECT.FEEDER) != 0)
+                    {
+                        hasMorePages = ((Convert.ToUInt32(documentHandlingStatus.get_Value()) &
+                        WIA_DPS_DOCUMENT_HANDLING_STATUS.FEED_READY) != 0);
+                    }
+                }
+            }
+            return images;
+        }
         /// <summary>
         /// Use scanner to scan an image (with user selecting the scanner from a dialog).
         /// </summary>
         /// <returns>Scanned images.</returns>
-        public static List<Image> Scan()
+        public static List<System.Drawing.Image> AutoScan(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
+                    int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             WIA.ICommonDialog dialog = new WIA.CommonDialog();
             WIA.Device device = dialog.ShowSelectDevice(WIA.WiaDeviceType.UnspecifiedDeviceType, true, false);
             if (device != null)
             {
-                return Scan(device.DeviceID);
+                return AutoScan(device.DeviceID, scanResolutionDPI, scanStartLeftPixel, scanStartTopPixel,
+                    scanWidthPixels, scanHeightPixels, brightnessPercents, contrastPercents, colorMode);
             }
             else
             {
@@ -61,9 +154,10 @@ namespace NgScanApp
         /// </summary>
         /// <param name="scannerName"></param>
         /// <returns>Scanned images.</returns>
-        public static List<Image> Scan(string scannerId)
+        public static List<System.Drawing.Image> AutoScan(string scannerId, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
+                    int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
-            List<Image> images = new List<Image>();
+            List<System.Drawing.Image> images = new List<System.Drawing.Image>();
             bool hasMorePages = true;
             while (hasMorePages)
             {
@@ -97,7 +191,9 @@ namespace NgScanApp
                 {
                     // scan image
                     WIA.ICommonDialog wiaCommonDialog = new WIA.CommonDialog();
-                    WIA.ImageFile image = (WIA.ImageFile)wiaCommonDialog.ShowTransfer(item, wiaFormatTIFF, false);
+                    AdjustScannerSettings(item, scanResolutionDPI, scanStartLeftPixel, scanStartTopPixel,
+                    scanWidthPixels, scanHeightPixels, brightnessPercents, contrastPercents, colorMode);
+                    WIA.ImageFile image = (WIA.ImageFile)wiaCommonDialog.ShowTransfer(item, wiaFormatBMP, false);
 
                     // save to temp file
                     string fileName = Path.GetTempFileName();
@@ -105,7 +201,7 @@ namespace NgScanApp
                     image.SaveFile(fileName);
                     image = null;
                     // add file to output list
-                    images.Add(Image.FromFile(fileName));
+                    images.Add(System.Drawing.Image.FromFile(fileName));
                 }
                 catch (Exception exc)
                 {
@@ -176,7 +272,7 @@ namespace NgScanApp
             return devices;
         }
 
-        private static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
+        public static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
                     int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             const string WIA_SCAN_COLOR_MODE = "6146";

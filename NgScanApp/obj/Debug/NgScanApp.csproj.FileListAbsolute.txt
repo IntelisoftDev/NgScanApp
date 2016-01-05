@@ -56,3 +56,7 @@ C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.g.cs
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.baml
 C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.g.cs
 C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\obj\Debug\mSlider.baml
+C:\Users\ahowson.EDOCNY2\Documents\GitHub\NgScanApp\NgScanApp\bin\Debug\Interop.WIA.dll
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\bin\Debug\Interop.WIA.dll
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\mSlider.g.cs
+C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\Debug\mSlider.baml

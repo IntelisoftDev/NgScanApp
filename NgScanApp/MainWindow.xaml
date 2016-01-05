@@ -32,16 +32,21 @@
         </Style>
     </Window.Resources>
     <Grid Background="Black">
-        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="281" Background="#FF191919" Margin="0,-10,5,10">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0">
-                <Image Source="Scanner.png" Width="61" Height="58" VerticalAlignment="Top"/>
-                <Label Content="Scan" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" />
-            </Grid>
-            <Button x:Name="SettingsBtn" HorizontalAlignment="Left" Margin="18,21,0,0" VerticalAlignment="Top" Width="51" Click="onSettingsCliked" Height="34" RenderTransformOrigin="0.655,1.215" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}">
-               <Image Source="settingsIco.png" OpacityMask="White" />
+        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="281" Background="#FF191919" Margin="0,-10,5,0">
+            <Button x:Name="SettingsBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Left" Margin="18,21,0,0" VerticalAlignment="Top" Width="51" Click="onSettingsCliked" Height="34" RenderTransformOrigin="0.655,1.215" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}">
+                <Image Source="settingsIco.png" OpacityMask="White" />
             </Button>
-            <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="89,199,72,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
-            <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
+            <Grid Width="200" Height="300" Margin="45,96,36,173" VerticalAlignment="Top">
+                <Button x:Name="ScanBtn" Style="{DynamicResource NoChromeButton}" Height="60" Width="63" Background="{x:Null}" Margin="65,50,72,190" Click="ScanBtnClicked" BorderBrush="White">
+                    <Grid Width="48" Height="48">
+                        <Image Source="Scanner.png" Width="48" Height="48" VerticalAlignment="Top"/>
+                        <Label Content="Scan" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center"/>
+                    </Grid>
+                </Button>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
+                <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="40,178,40,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
+            </Grid>
         </Grid>
         <Grid x:Name="GridL" Margin="0,0,286,0">
             <Image x:Name="ScanView"/>
