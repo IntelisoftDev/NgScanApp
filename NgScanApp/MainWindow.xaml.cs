@@ -19,6 +19,7 @@ using AForge;
 using AForge.Imaging;
 using AForge.Math;
 using WIA;
+using System.Runtime.InteropServices;
 
 namespace NgScanApp
 {
@@ -27,18 +28,60 @@ namespace NgScanApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        static String userProfile = Environment.GetEnvironmentVariable("userprofile");
+        string ScannerSettings = Environment.CurrentDirectory + "\\ScannerSettings.settings";
+
+        public class scanSettings
+        {
+            public int colorMode { get; set; }
+            public float cropX { get; set; }
+            public float cropY { get; set; }
+            public float wInch { get; set; }
+            public float hInch { get; set; }
+            public int dpi { get; set; }
+            public int brightness { get; set; }
+            public int contrast { get; set; }
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
+            readSettings();
+            //
             getDevices();
 
             // Check if a scanner is connected
-            if(DeviceCmb.Items.Count != 0)
+            if (DeviceCmb.Items.Count != 0)
             {
                 DeviceCmb.SelectedIndex = 0;
             }
         }
-        static String userProfile = Environment.GetEnvironmentVariable("userprofile");
+
+        private void readSettings()
+        {
+            //if (File.Exists(ScannerSettings))
+            // {
+            // string[] allSettings = System.IO.File.ReadAllLines(ScannerSettings);
+
+            scanSettings _scanSettings = new scanSettings();
+            {
+                _scanSettings.contrast = 150;
+            };
+            propList.DataContext = _scanSettings;
+
+            //  }
+        }
+
+        private void saveSettings()
+        {
+            scanSettings _scanSettings = new scanSettings();
+            string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
+            "DPI: " + _scanSettings.dpi, "Width: " + _scanSettings.wInch, "Height: " + _scanSettings.hInch, "Crop X: " + _scanSettings.cropX,
+            "Crop Y: " + _scanSettings.cropY};
+            System.IO.File.WriteAllLines(Environment.CurrentDirectory + "\\ScannerSettings.settings", allSettings);
+        }
+
         private void getDevices()
         {
             try
@@ -55,13 +98,13 @@ namespace NgScanApp
                     DeviceCmb.Items.Add(device);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
-        BitmapSource convImage(System.Drawing.Image imageData)
+
+        BitmapSource ImgToBmpSource(System.Drawing.Image imageData)
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -74,12 +117,21 @@ namespace NgScanApp
                 return bI;
             }
         }
-
-        private void onSettingsCliked(object sender, RoutedEventArgs e)
+        Bitmap ImgToBmp(System.Drawing.Image img)
         {
-            DevSettings m_devSettings = new DevSettings();
-            m_devSettings.Show();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.Save(ms, ImageFormat.Bmp);
+                Bitmap bi = new Bitmap(ms);
+                return bi;
+            }
         }
+
+        /* private void onSettingsCliked(object sender, RoutedEventArgs e)
+         {
+             DevSettings m_devSettings = new DevSettings();
+             m_devSettings.Show();
+         }*/
 
         private void ScanBtnClicked(object sender, RoutedEventArgs e)
         {
@@ -98,25 +150,21 @@ namespace NgScanApp
                 Deskew _deskew = new Deskew();
                 var encoder = new TiffBitmapEncoder();
                 encoder.Compression = TiffCompressOption.Ccitt4;
-                float cropX = 1500.00f;
-                float cropY = 1000.00f;
-                float wInch = 25f;
-                float hInch = 30f;
-                int dpi = 300;
-                int brightness = 0;
-                int contrast = 260;
-                
-                List<System.Drawing.Image> images = WIAScanner.preScan((string)DeviceIdCmb.SelectedItem);
-                //List<System.Drawing.Image> images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, dpi, (int)cropX, (int)cropY, (int)((wInch * dpi) + cropX), (int)((hInch * dpi) + cropY), brightness, contrast, 1);
+                scanSettings _scanSettings = new scanSettings();
+
+                List<System.Drawing.Image> images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, _scanSettings.dpi, (int)_scanSettings.cropX, (int)_scanSettings.cropY,
+                    (int)((_scanSettings.wInch * _scanSettings.dpi) + _scanSettings.cropX), (int)((_scanSettings.hInch * _scanSettings.dpi) + _scanSettings.cropY), _scanSettings.brightness,
+                    _scanSettings.contrast, 1);
                 foreach (System.Drawing.Image image in images)
                 {
-                    ScanView.Source = convImage((System.Drawing.Image)_deskew.DeskewImage((Bitmap)image));
-                    //ScanView.Source = convImage(image);
-                   /* encoder.Frames.Add(BitmapFrame.Create(convImage(image)));
-                    using (var stream = new FileStream(userProfile + "\\Pictures\\" + "image2.tif" , FileMode.Create, FileAccess.Write))
+                    //ScanView.Source = convImage((System.Drawing.Image)_deskew.DeskewImage((Bitmap)image));
+                    ScanView.Source = setPixelFormat(ImgToBmpSource(image), PixelFormats.BlackWhite);
+                    // encoder.Frames.Add(BitmapFrame.Create(BitmapTo1Bpp(ImgToBmp(image))));
+                    Random rnd = new Random();
+                    using (var stream = new FileStream(userProfile + "\\Pictures\\" + "image" + rnd.Next(1, 12) + ".tif", FileMode.Create, FileAccess.Write))
                     {
                         encoder.Save(stream);
-                    }*/
+                    }
                 }
 
             }
@@ -124,6 +172,63 @@ namespace NgScanApp
             {
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        public static BitmapSource setPixelFormat(BitmapSource image, System.Windows.Media.PixelFormat format)
+        {
+            var formatted = new FormatConvertedBitmap();
+
+            formatted.BeginInit();
+            formatted.Source = image;
+            formatted.DestinationFormat = format;
+            formatted.EndInit();
+            return formatted;
+        }
+        public static Bitmap BitmapTo1Bpp(Bitmap img)
+        {
+            int w = img.Width;
+            int h = img.Height;
+            Bitmap bmp = new Bitmap(w, h, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+            byte[] scan = new byte[(w + 7) / 8];
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (x % 8 == 0) scan[x / 8] = 0;
+                    System.Drawing.Color c = img.GetPixel(x, y);
+                    if (c.GetBrightness() >= 0.5) scan[x / 8] |= (byte)(0x80 >> (x % 8));
+                }
+                Marshal.Copy(scan, 0, (IntPtr)((long)data.Scan0 + data.Stride * y), scan.Length);
+            }
+            bmp.UnlockBits(data);
+            return bmp;
+        }
+
+        private void previewBtnClicked(object sender, RoutedEventArgs e)
+        {
+            CommonDialogClass commonDialogClass = new CommonDialogClass();
+            DeviceIdCmb.SelectedIndex = DeviceCmb.SelectedIndex;
+            try
+            {
+                if (DeviceCmb.Items.Count == 0)
+                {
+                    MessageBox.Show("Please connect a scanner.");
+                }
+                List<System.Drawing.Image> images = WIAScanner.preScan((string)DeviceIdCmb.SelectedItem);
+                foreach (System.Drawing.Image img in images)
+                {
+                    ScanView.Source = ImgToBmpSource(img);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void applyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saveSettings();
         }
     }
 }

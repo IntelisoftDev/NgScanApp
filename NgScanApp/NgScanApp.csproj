@@ -105,23 +105,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Deskew.cs" />
-    <Compile Include="deviceSettings.cs" />
-    <Compile Include="deviceSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>deviceSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="DevSettings.xaml.cs">
-      <DependentUpon>DevSettings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="mSlider.xaml.cs">
       <DependentUpon>mSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="WIAScanner.cs" />
-    <Page Include="DevSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -157,10 +144,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="deviceSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>deviceSettings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
