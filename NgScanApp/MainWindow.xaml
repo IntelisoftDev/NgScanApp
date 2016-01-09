@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="NgScanApp" Height="629.109" Width="1024" WindowState="Maximized">
+        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080">
     <Window.Resources>
         <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
@@ -32,7 +32,7 @@
         </Style>
     </Window.Resources>
     <Grid Background="Black">
-        <Grid x:Name="GridR" HorizontalAlignment="Right" Width="281" Background="#FF191919" Margin="0,-10,5,0">
+        <Grid x:Name="GridR" Width="281" Background="#FF191919" Margin="0,2,3,-12" HorizontalAlignment="Right">
             <Grid Width="200" Height="203" Margin="45,26,36,0" VerticalAlignment="Top">
                 <Button x:Name="ScanBtn" Style="{DynamicResource NoChromeButton}" Height="60" Width="63" Background="{x:Null}" Margin="14,69,123,74" Click="ScanBtnClicked" BorderBrush="White">
                     <Grid Width="48" Height="48">
@@ -45,13 +45,13 @@
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
                 <Button x:Name="previewBtn" Content="Preview" HorizontalAlignment="Left" Margin="98,85,0,0" VerticalAlignment="Top" Width="75" Click="previewBtnClicked"/>
             </Grid>
-            <Grid Margin="11,279,7,134" Background="#FF646464" x:Name="propList" Height="195">
-                <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="253" BorderBrush="{x:Null}" Background="#FF646464" Margin="0,10,0,0">
-                    <TabItem Header="General" Background="#FF464646">
-                        <Grid Background="#FF646464" Margin="0,0,-12,0" Height="100" VerticalAlignment="Top">
+            <Grid Margin="11,420,7,127" x:Name="propList" Height="200">
+                <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="253" BorderBrush="{x:Null}" Background="#FF646464" Margin="0,2,0,-55">
+                    <TabItem Header="General" Background="#FF464646" Margin="0,0,-4,-2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid Background="#FF646464" Margin="0,0,-12,0" Height="100" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Grid Width="124" Height="100" Margin="10,10,0,-10" HorizontalAlignment="Left">
-                                <Label Content="Color Mode" HorizontalAlignment="Center" Margin="14,0,14,74"/>
-                                <ComboBox x:Name="colModeCmb" SelectedIndex="0" Width="120" Height="20" Margin="-6,31,0,49" HorizontalAlignment="Left" Background="#FF464646">
+                                <Label Content="Color Mode" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top" Foreground="White"/>
+                                <ComboBox x:Name="colModeCmb" SelectedIndex="{Binding colorMode}" Width="120" Height="20" Margin="-6,31,0,49" HorizontalAlignment="Left" Background="#FF464646">
                                     <ComboBoxItem Content="Black and White" HorizontalAlignment="Left" Width="118"/>
                                     <ComboBoxItem Content="Color" HorizontalAlignment="Left" Width="118"/>
                                     <ComboBoxItem Content="Gray Scale" HorizontalAlignment="Left" Width="118"/>
@@ -59,28 +59,44 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Brightness" Margin="-2,0,-2,-2" Background="#FF464646">
+                    <TabItem Header="Brightness" Background="#FF464646" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Grid Margin="0,9,0,-9">
                             <Grid.Background>
                                 <SolidColorBrush Color="#FF646464"/>
                             </Grid.Background>
-                            <Grid Height="149" Margin="10,10,49,0" VerticalAlignment="Top">
-                                <Label x:Name="label0" Content="Brightness" Margin="-2,0,-51,10" HorizontalAlignment="Right" Width="241" Height="139"/>
-                                <Slider  Maximum="255" TickPlacement="BottomRight" TickFrequency="5" Ticks="" x:Name="brightSl" Margin="10,26,64,104" Value="{Binding brightness}" Background="#FF464646"/>
-                                <TextBox x:Name="textBox" Height="20"  Width="45" TextWrapping="Wrap" Text="{Binding Value, ElementName=brightSl, UpdateSourceTrigger=PropertyChanged}"  Margin="134,25,10,104" RenderTransformOrigin="1.212,-0.568"/>
-                                <Label x:Name="label1" Content="Contrast" Margin="1,50,132,0" Height="24" VerticalAlignment="Top" RenderTransformOrigin="2.169,0.41"/>
-                                <Slider x:Name="contrastSl" Value="{Binding contrast}" Margin="10,74,64,55" Maximum="255" TickPlacement="BottomRight" TickFrequency="5" RenderTransformOrigin="-0.745,0.332" Background="#FF464646"/>
-                                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="134,74,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=contrastSl, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.722,-0.329"/>
+                            <Grid Height="112" Margin="10,10,49,0" VerticalAlignment="Top">
+                                <Label x:Name="label0" Content="Brightness" Margin="10,3,0,0" HorizontalAlignment="Left" Width="80" Height="24" VerticalAlignment="Top" Foreground="White"/>
+                                <Slider  Maximum="255" TickPlacement="BottomRight" TickFrequency="5" Ticks="" x:Name="brightSl" Margin="15,27,59,62" Value="{Binding brightness}" Background="#FF464646" Height="18"/>
+                                <TextBox x:Name="textBox" Height="20"  Width="45" TextWrapping="Wrap" Text="{Binding Value, ElementName=brightSl, UpdateSourceTrigger=Default}"  Margin="143,28,0,64" RenderTransformOrigin="1.212,-0.568"/>
+                                <Label x:Name="label1" Content="Contrast" Margin="5,50,128,0" Height="24" VerticalAlignment="Top" RenderTransformOrigin="2.169,0.41" Width="55" Foreground="White"/>
+                                <Slider x:Name="contrastSl" Value="{Binding contrast}" Margin="10,74,64,10" Maximum="255" TickPlacement="BottomRight" TickFrequency="5" RenderTransformOrigin="-0.745,0.332" Background="#FF464646" Height="18"/>
+                                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="143,77,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=contrastSl, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.722,-0.329"/>
                             </Grid>
                         </Grid>
                     </TabItem>
                 </TabControl>
                 <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" Margin="178,165,0,0" VerticalAlignment="Top" Width="75" Click="applyBtn_Click"/>
             </Grid>
+            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="23" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Margin="150,262,0,0" VerticalAlignment="Top" Width="75"/>
+            <GroupBox Margin="10,318,7,555" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="White">
+                <Grid>
+                    <TextBox x:Name="widthTxt" HorizontalAlignment="Left" Height="17" Margin="67,19,0,0" TextWrapping="Wrap" Text="{Binding wInch, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="42"/>
+                    <Label x:Name="widthLbn" Content="Width" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="52" Foreground="#FFFDFDFD" Height="30"/>
+                    <Label x:Name="heightLbn" Content="Height" Height="30" Width="52" Foreground="White" Margin="10,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"></Label>
+                    <TextBox x:Name="heightTxt" HorizontalAlignment="Left" Height="17" Margin="67,54,0,0" TextWrapping="Wrap" Text="{Binding hInch, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="42"/>
+                    <Label Height="30" Width="52" Content="Crop X" Foreground="White" Margin="127,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <TextBox x:Name="cropxTxt" Text="{Binding cropX, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="184,16,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.667,1.676"></TextBox>
+                    <Label Height="30" Width="52" Content="Crop Y" Foreground="White" Margin="127,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <TextBox x:Name="cropyTxt" Height="17" Text="{Binding cropY, UpdateSourceTrigger=Default}" Width="42" Margin="184,54,0,0" RenderTransformOrigin="0.631,0.382" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
+                    <Label x:Name="dpiLbn" Height="25" Width="42" Content="DPI" Foreground="White" Margin="90,81,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <TextBox x:Name="dpiTxt" Text="{Binding dpi, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="129,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
+                </Grid>
+            </GroupBox>
 
         </Grid>
         <Grid x:Name="GridL" Margin="0,0,286,0">
-            <Image x:Name="ScanView"/>
+            <Image x:Name="ScanView" Margin="0,10,0,0"/>
         </Grid>
 
     </Grid>

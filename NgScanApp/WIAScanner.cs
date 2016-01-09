@@ -43,7 +43,7 @@ namespace NgScanApp
         {
             WIA.ICommonDialog dialog = new WIA.CommonDialog();
             WIA.Device device = dialog.ShowSelectDevice(WIA.WiaDeviceType.UnspecifiedDeviceType, true, false);
-            if(device != null)
+            if (device != null)
             {
                 return preScan(device.DeviceID);
             }
@@ -62,15 +62,15 @@ namespace NgScanApp
                 WIA.DeviceManager manager = new WIA.DeviceManager();
                 WIA.Device device = null;
 
-                foreach(WIA.DeviceInfo info in manager.DeviceInfos)
+                foreach (WIA.DeviceInfo info in manager.DeviceInfos)
                 {
-                    if(info.DeviceID == scannerId)
+                    if (info.DeviceID == scannerId)
                     {
                         device = info.Connect();
                         break;
                     }
                 }
-                if(device == null)
+                if (device == null)
                 {
                     string availableDevices = "";
                     foreach (WIA.DeviceInfo info in manager.DeviceInfos)
@@ -133,8 +133,8 @@ namespace NgScanApp
         /// Use scanner to scan an image (with user selecting the scanner from a dialog).
         /// </summary>
         /// <returns>Scanned images.</returns>
-        public static List<System.Drawing.Image> AutoScan(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
-                    int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
+        public static List<System.Drawing.Image> AutoScan(IItem scannnerItem, int scanResolutionDPI, double scanStartLeftPixel, double scanStartTopPixel,
+                    double scanWidthPixels, double scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             WIA.ICommonDialog dialog = new WIA.CommonDialog();
             WIA.Device device = dialog.ShowSelectDevice(WIA.WiaDeviceType.UnspecifiedDeviceType, true, false);
@@ -154,8 +154,8 @@ namespace NgScanApp
         /// </summary>
         /// <param name="scannerName"></param>
         /// <returns>Scanned images.</returns>
-        public static List<System.Drawing.Image> AutoScan(string scannerId, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
-                    int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
+        public static List<System.Drawing.Image> AutoScan(string scannerId, int scanResolutionDPI, double scanStartLeftPixel, double scanStartTopPixel,
+                    double scanWidthPixels, double scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             List<System.Drawing.Image> images = new List<System.Drawing.Image>();
             bool hasMorePages = true;
@@ -257,11 +257,11 @@ namespace NgScanApp
             WIA.DeviceManager manager = new WIA.DeviceManager();
             foreach (WIA.DeviceInfo info in manager.DeviceInfos)
             {
-                if(info.Type == WIA.WiaDeviceType.ScannerDeviceType)
+                if (info.Type == WIA.WiaDeviceType.ScannerDeviceType)
                 {
-                    foreach(WIA.Property p in info.Properties)
+                    foreach (WIA.Property p in info.Properties)
                     {
-                        if(p.Name == "Name")
+                        if (p.Name == "Name")
                         {
                             deviceName = ((WIA.IProperty)p).get_Value().ToString();
                             devices.Add(deviceName);
@@ -272,8 +272,8 @@ namespace NgScanApp
             return devices;
         }
 
-        public static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel,
-                    int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
+        public static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, double scanStartLeftPixel, double scanStartTopPixel,
+                    double scanWidthPixels, double scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             const string WIA_SCAN_COLOR_MODE = "6146";
             const string WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = "6147";

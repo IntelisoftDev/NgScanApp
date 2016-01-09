@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("NgScanApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IntelliSoftDev")]
+[assembly: AssemblyCompany("InteliSoftDev")]
 [assembly: AssemblyProduct("NgScanApp")]
-[assembly: AssemblyCopyright("Copyright © IntelliSoftDev   2015")]
+[assembly: AssemblyCopyright("Copyright © InteliSoftDev   2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
