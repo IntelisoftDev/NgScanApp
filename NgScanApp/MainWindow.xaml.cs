@@ -23,6 +23,8 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using AForge.Imaging;
+using AForge.Imaging.Filters;
 
 namespace NgScanApp
 {
@@ -179,18 +181,6 @@ namespace NgScanApp
             }
         }
         
-        public BitmapSource BmpToBmpSource(Bitmap bmp)
-        {
-            var bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
-                System.Drawing.Imaging.ImageLockMode.ReadOnly, bmp.PixelFormat);
-
-            var bmpSource = BitmapSource.Create(
-                bmpData.Width, bmpData.Height, Convert.ToDouble(dpiTxt.Text), Convert.ToDouble(dpiTxt.Text), PixelFormats.Bgr32, null,
-                bmpData.Scan0, bmpData.Stride * bmpData.Height, bmpData.Stride);
-            bmp.UnlockBits(bmpData);
-
-            return bmpSource;
-        }
         private void ScanBtnClicked(object sender, RoutedEventArgs e)
         {
             InitScan();
@@ -277,6 +267,11 @@ namespace NgScanApp
                 foreach (System.Drawing.Image img in images)
                 {
                     ScanView.Source = ImgToBmpSource(img);
+                    Threshold threshold_filter = new Threshold(240);
+                    Bitmap bmp = ImgToBmp(img);
+                   threshold_filter.Apply(bmp);
+                    Invert invert_filter = new Invert();
+                    invert_filter.Apply(bmp);
                 }
             }
             catch (Exception ex)
