@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080">
+        Title="NgScanApp" WindowState="Maximized" Width="1024" Height="768">
     <Window.Resources>
         <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
@@ -33,17 +33,17 @@
     </Window.Resources>
     <Grid Background="Black">
         <Grid x:Name="GridR" Width="281" Background="#FF191919" Margin="0,2,3,-12" HorizontalAlignment="Right">
-            <Grid Width="200" Height="203" Margin="45,26,36,0" VerticalAlignment="Top">
-                <Button x:Name="ScanBtn" Style="{DynamicResource NoChromeButton}" Height="60" Width="63" Background="{x:Null}" Margin="14,69,123,74" Click="ScanBtnClicked" BorderBrush="White">
+            <Grid Width="200" Height="158" Margin="45,26,36,0" VerticalAlignment="Top">
+                <Button x:Name="ScanBtn" Style="{DynamicResource NoChromeButton}" Height="60" Width="63" Background="{x:Null}" Margin="10,13,127,85" Click="ScanBtnClicked" BorderBrush="White">
                     <Grid Width="48" Height="48">
                         <Image Source="Scanner.png" Width="48" Height="48" VerticalAlignment="Top"/>
                         <Label Content="Scan" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center"/>
                     </Grid>
                 </Button>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
-                <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="40,178,40,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="40,113,40,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
-                <Button x:Name="previewBtn" Content="Preview" HorizontalAlignment="Left" Margin="98,85,0,0" VerticalAlignment="Top" Width="75" Click="previewBtnClicked"/>
+                <Button x:Name="previewBtn" Content="Preview" HorizontalAlignment="Left" Margin="98,39,0,0" VerticalAlignment="Top" Width="75" Click="previewBtnClicked"/>
             </Grid>
             <Grid Margin="11,420,7,127" x:Name="propList" Height="200">
                 <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="253" BorderBrush="{x:Null}" Background="#FF646464" Margin="0,2,0,-55">
@@ -77,9 +77,9 @@
                 </TabControl>
                 <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" Margin="178,165,0,0" VerticalAlignment="Top" Width="75" Click="applyBtn_Click"/>
             </Grid>
-            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="23" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Margin="150,262,0,0" VerticalAlignment="Top" Width="75"/>
-            <GroupBox Margin="10,318,7,555" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="White">
+            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="23" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
+            <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Margin="25,305,0,0" VerticalAlignment="Top" Width="75" Click="browseBtn_Click"/>
+            <GroupBox Margin="10,381,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="White">
                 <Grid>
                     <TextBox x:Name="widthTxt" HorizontalAlignment="Left" Height="17" Margin="67,19,0,0" TextWrapping="Wrap" Text="{Binding wInch, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="42"/>
                     <Label x:Name="widthLbn" Content="Width" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="52" Foreground="#FFFDFDFD" Height="30"/>
@@ -93,6 +93,7 @@
                     <TextBox x:Name="dpiTxt" Text="{Binding dpi, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="129,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
                 </Grid>
             </GroupBox>
+            <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,226,0,0" VerticalAlignment="Top" Foreground="White"/>
 
         </Grid>
         <Grid x:Name="GridL" Margin="0,0,286,0">

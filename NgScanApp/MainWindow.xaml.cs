@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
+using Microsoft.Win32;
 
 namespace NgScanApp
 {
@@ -37,7 +38,7 @@ namespace NgScanApp
         public string vendor = "";
         public string local_appData = "";
         public string ScannerSettings = "";
-
+        public string fileName = "";
         public class scanSettings
         {
             public int colorMode { get; set; }
@@ -73,8 +74,8 @@ namespace NgScanApp
             {
                 scanSettings _scanSettings = new scanSettings();
                 _scanSettings.dpi = 300;
-                _scanSettings.wInch = 8.50;
-                _scanSettings.hInch = 11;
+                //_scanSettings.wInch = 8.50;
+                // _scanSettings.hInch = 11;
                 _scanSettings.cropX = 0;
                 _scanSettings.cropY = 0;
                 _scanSettings.colorMode = 0;
@@ -96,10 +97,10 @@ namespace NgScanApp
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
                     _scanSettings.dpi = (int)parseSettings("DPI");
-                    _scanSettings.wInch = parseSettings("Width");
-                    _scanSettings.hInch = parseSettings("Height");
+                   // _scanSettings.wInch = parseSettings("Width");
+                   // _scanSettings.hInch = parseSettings("Height");
                     //_scanSettings.cropX = parseSettings("Crop X");
-                   // _scanSettings.cropY = parseSettings("Crop Y");
+                    // _scanSettings.cropY = parseSettings("Crop Y");
                     GridR.DataContext = _scanSettings;
                 };
 
@@ -121,12 +122,12 @@ namespace NgScanApp
             _scanSettings.colorMode = colModeCmb.SelectedIndex;
             _scanSettings.brightness = (int)brightSl.Value;
             _scanSettings.contrast = (int)contrastSl.Value;
-            
+
             if (dpiTxt.Text != "")
             {
                 _scanSettings.dpi = Convert.ToInt32(dpiTxt.Text);
-                _scanSettings.wInch = Convert.ToDouble(widthTxt.Text);
-                _scanSettings.hInch = Convert.ToDouble(heightTxt.Text);
+                //_scanSettings.wInch = Convert.ToDouble(widthTxt.Text);
+                //_scanSettings.hInch = Convert.ToDouble(heightTxt.Text);
                 _scanSettings.cropX = Convert.ToDouble(cropxTxt.Text);
                 _scanSettings.cropY = Convert.ToDouble(cropyTxt.Text);
             }
@@ -158,35 +159,13 @@ namespace NgScanApp
             }
         }
 
-        public BitmapSource ImgToBmpSource(System.Drawing.Image imageData)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                imageData.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                BitmapImage bI = new BitmapImage();
-                bI.BeginInit();
-                bI.CacheOption = BitmapCacheOption.OnLoad;
-                bI.StreamSource = ms;
-                bI.EndInit();
-                return bI;
-            }
-        }
-        public Bitmap ImgToBmp(System.Drawing.Image img)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                img.Save(ms, ImageFormat.Bmp);
-                Bitmap bi = new Bitmap(ms);
-                return bi;
-            }
-        }
-        
         private void ScanBtnClicked(object sender, RoutedEventArgs e)
         {
             InitScan();
         }
         public void InitScan()
         {
+            ImageProc imgP = new ImageProc();
             CommonDialogClass commonDialogClass = new CommonDialogClass();
             DeviceIdCmb.SelectedIndex = DeviceCmb.SelectedIndex;
             try
@@ -199,18 +178,17 @@ namespace NgScanApp
                 var encoder = new TiffBitmapEncoder();
                 encoder.Compression = TiffCompressOption.Ccitt4;
                 scanSettings _scanSettings = new scanSettings();
-                MessageBox.Show(Convert.ToInt32(contrastSl.Value).ToString());
                 List<System.Drawing.Image> images = null;
-                    images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), Convert.ToDouble(cropxTxt.Text), Convert.ToDouble(cropyTxt.Text),
-                    ((Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropxTxt.Text)), ((Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropyTxt.Text)), (int)brightSl.Value,
-                    (int)contrastSl.Value, colModeCmb.SelectedIndex);
+                images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), Convert.ToDouble(cropxTxt.Text), Convert.ToDouble(cropyTxt.Text),
+                ((Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropxTxt.Text)), ((Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropyTxt.Text)), (int)brightSl.Value,
+                (int)contrastSl.Value, colModeCmb.SelectedIndex);
                 foreach (System.Drawing.Image image in images)
                 {
                     //ScanView.Source = convImage((System.Drawing.Image)_deskew.DeskewImage((Bitmap)image));
-                    ScanView.Source = setPixelFormat(ImgToBmpSource(image), PixelFormats.BlackWhite);
-                    encoder.Frames.Add(BitmapFrame.Create(setPixelFormat(ImgToBmpSource(image), PixelFormats.BlackWhite)));
-                    Random rnd = new Random();
-                    using (var stream = new FileStream(userProfile + "\\Pictures\\" + "image2.tif", FileMode.Create, FileAccess.Write))
+                    ScanView.Source = ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
+                    encoder.Frames.Add(BitmapFrame.Create(ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite)));
+
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
                     {
                         encoder.Save(stream);
                     }
@@ -221,36 +199,6 @@ namespace NgScanApp
             {
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-        public static BitmapSource setPixelFormat(BitmapSource image, System.Windows.Media.PixelFormat format)
-        {
-            var formatted = new FormatConvertedBitmap();
-
-            formatted.BeginInit();
-            formatted.Source = image;
-            formatted.DestinationFormat = format;
-            formatted.EndInit();
-            return formatted;
-        }
-        public static Bitmap BitmapTo1Bpp(Bitmap img)
-        {
-            int w = img.Width;
-            int h = img.Height;
-            Bitmap bmp = new Bitmap(w, h, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
-            BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
-            byte[] scan = new byte[(w + 7) / 8];
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    if (x % 8 == 0) scan[x / 8] = 0;
-                    System.Drawing.Color c = img.GetPixel(x, y);
-                    if (c.GetBrightness() >= 0.5) scan[x / 8] |= (byte)(0x80 >> (x % 8));
-                }
-                Marshal.Copy(scan, 0, (IntPtr)((long)data.Scan0 + data.Stride * y), scan.Length);
-            }
-            bmp.UnlockBits(data);
-            return bmp;
         }
 
         private void previewBtnClicked(object sender, RoutedEventArgs e)
@@ -263,15 +211,28 @@ namespace NgScanApp
                 {
                     MessageBox.Show("Please connect a scanner.");
                 }
+
                 List<System.Drawing.Image> images = WIAScanner.preScan((string)DeviceIdCmb.SelectedItem);
                 foreach (System.Drawing.Image img in images)
                 {
-                    ScanView.Source = ImgToBmpSource(img);
+                    //ScanView.Source = ImgToBmpSource(img);
                     Threshold threshold_filter = new Threshold(240);
-                    Bitmap bmp = ImgToBmp(img);
-                   threshold_filter.Apply(bmp);
+                    Bitmap bmp = ImageProc.ImgToBmp(img);
+                    threshold_filter.Apply(bmp);
                     Invert invert_filter = new Invert();
                     invert_filter.Apply(bmp);
+                    BlobCounter bc = new BlobCounter();
+                    bc.ProcessImage(bmp);
+                    System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();
+                    ScanView.Source = ImageProc.ImgToBmpSource(img);
+
+                    foreach (System.Drawing.Rectangle rect in rects)
+                    {
+                        cropxTxt.Text = (rect.X / 50).ToString();
+                        cropyTxt.Text = (rect.Y / 50).ToString();
+                        heightTxt.Text = (rect.Height / 50).ToString();
+                        widthTxt.Text = (rect.Width / 50).ToString();
+                    }
                 }
             }
             catch (Exception ex)
@@ -283,6 +244,21 @@ namespace NgScanApp
         private void applyBtn_Click(object sender, RoutedEventArgs e)
         {
             saveSettings();
+        }
+
+        private void browseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDlg = new SaveFileDialog();
+
+            saveDlg.InitialDirectory = userProfile + "\\Pictures\\";
+            saveDlg.Filter = "JPEG files (*.jpeg; *.jpg)|*.jpeg; *.jpg|PNG files (*.png)|*.png|TIFF files (*.tif; *.tiff)|*.tif; *.tiff|All files (*.*)|*.*";
+            saveDlg.FilterIndex = 4;
+            saveDlg.RestoreDirectory = true;
+
+            if (saveDlg.ShowDialog() == true)
+            {
+                savePathTxt.Text = saveDlg.FileName;
+            }
         }
     }
 }
