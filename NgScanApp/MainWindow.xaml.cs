@@ -97,8 +97,8 @@ namespace NgScanApp
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
                     _scanSettings.dpi = (int)parseSettings("DPI");
-                   // _scanSettings.wInch = parseSettings("Width");
-                   // _scanSettings.hInch = parseSettings("Height");
+                    // _scanSettings.wInch = parseSettings("Width");
+                    // _scanSettings.hInch = parseSettings("Height");
                     //_scanSettings.cropX = parseSettings("Crop X");
                     // _scanSettings.cropY = parseSettings("Crop Y");
                     GridR.DataContext = _scanSettings;
@@ -180,11 +180,10 @@ namespace NgScanApp
                 scanSettings _scanSettings = new scanSettings();
                 List<System.Drawing.Image> images = null;
                 images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), Convert.ToDouble(cropxTxt.Text), Convert.ToDouble(cropyTxt.Text),
-                ((Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropxTxt.Text)), ((Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)) + Convert.ToDouble(cropyTxt.Text)), (int)brightSl.Value,
+                (Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (int)brightSl.Value,
                 (int)contrastSl.Value, colModeCmb.SelectedIndex);
                 foreach (System.Drawing.Image image in images)
                 {
-                    //ScanView.Source = convImage((System.Drawing.Image)_deskew.DeskewImage((Bitmap)image));
                     ScanView.Source = ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
                     encoder.Frames.Add(BitmapFrame.Create(ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite)));
 
@@ -203,6 +202,10 @@ namespace NgScanApp
 
         private void previewBtnClicked(object sender, RoutedEventArgs e)
         {
+            previewScan();
+        }
+        private void previewScan()
+        {
             CommonDialogClass commonDialogClass = new CommonDialogClass();
             DeviceIdCmb.SelectedIndex = DeviceCmb.SelectedIndex;
             try
@@ -216,22 +219,31 @@ namespace NgScanApp
                 foreach (System.Drawing.Image img in images)
                 {
                     //ScanView.Source = ImgToBmpSource(img);
-                    Threshold threshold_filter = new Threshold(240);
-                    Bitmap bmp = ImageProc.ImgToBmp(img);
-                    threshold_filter.Apply(bmp);
-                    Invert invert_filter = new Invert();
-                    invert_filter.Apply(bmp);
+                    Bitmap bmp = new Bitmap(img);
+                    Grayscale gs_fil = new Grayscale(0.2125, 0.7154, 0.0721);
+                    Bitmap gs_Bmp = gs_fil.Apply(bmp);
+                    DocumentSkewChecker skewCheck = new DocumentSkewChecker();
+                    double angle = skewCheck.GetSkewAngle(gs_Bmp);
+                    RotateBilinear rotateFilter = new RotateBilinear(-angle);
+                    rotateFilter.FillColor = System.Drawing.Color.White;
+                    Bitmap rotatedImage = rotateFilter.Apply(gs_Bmp);
+                    new ContrastStretch().ApplyInPlace(gs_Bmp);
+                    new Threshold(180).ApplyInPlace(gs_Bmp);
+                    // new Invert().ApplyInPlace(rotatedImage);
                     BlobCounter bc = new BlobCounter();
-                    bc.ProcessImage(bmp);
-                    System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();
-                    ScanView.Source = ImageProc.ImgToBmpSource(img);
 
+                    bc.FilterBlobs = true;
+                    bc.ProcessImage(gs_Bmp);
+                    System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();
+
+                    ScanView.Source = ImageProc.ImgToBmpSource(img);
+                    gs_Bmp.Save(userProfile + "\\Pictures\\TreshSample1.png", ImageFormat.Png);
                     foreach (System.Drawing.Rectangle rect in rects)
                     {
-                        cropxTxt.Text = (rect.X / 50).ToString();
-                        cropyTxt.Text = (rect.Y / 50).ToString();
-                        heightTxt.Text = (rect.Height / 50).ToString();
-                        widthTxt.Text = (rect.Width / 50).ToString();
+                        cropxTxt.Text = (rect.Left - 200).ToString();
+                        cropyTxt.Text = (rect.Top - 200).ToString();
+                        heightTxt.Text = (rect.Right / 45).ToString();
+                        widthTxt.Text = (rect.Bottom / 45).ToString();
                     }
                 }
             }
