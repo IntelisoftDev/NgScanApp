@@ -50,3 +50,4 @@ C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Debug\mSlider.baml
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Debug\NgScanApp.g.resources
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Debug\NgScanApp.Properties.Resources.resources
 C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Debug\NgScanApp.csproj.GenerateResource.Cache
+C:\Users\Andrew\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Debug\CropSelectionControl.dll

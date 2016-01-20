@@ -23,9 +23,9 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using AForge.Imaging;
 using AForge.Imaging.Filters;
 using Microsoft.Win32;
+using CropSelectionControl;
 
 namespace NgScanApp
 {
@@ -66,6 +66,9 @@ namespace NgScanApp
             {
                 DeviceCmb.SelectedIndex = 0;
             }
+
+            CropSelectionControl.SelectionControl selCrop = new SelectionControl();
+            
         }
 
         private void readSettings()
@@ -97,8 +100,8 @@ namespace NgScanApp
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
                     _scanSettings.dpi = (int)parseSettings("DPI");
-                    // _scanSettings.wInch = parseSettings("Width");
-                    // _scanSettings.hInch = parseSettings("Height");
+                   // _scanSettings.wInch = parseSettings("Width");
+                   // _scanSettings.hInch = parseSettings("Height");
                     //_scanSettings.cropX = parseSettings("Crop X");
                     // _scanSettings.cropY = parseSettings("Crop Y");
                     GridR.DataContext = _scanSettings;
@@ -229,7 +232,7 @@ namespace NgScanApp
                     Bitmap rotatedImage = rotateFilter.Apply(gs_Bmp);
                     new ContrastStretch().ApplyInPlace(gs_Bmp);
                     new Threshold(180).ApplyInPlace(gs_Bmp);
-                    // new Invert().ApplyInPlace(rotatedImage);
+                    //new Invert().ApplyInPlace(gs_Bmp);
                     BlobCounter bc = new BlobCounter();
 
                     bc.FilterBlobs = true;
@@ -237,13 +240,15 @@ namespace NgScanApp
                     System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();
 
                     ScanView.Source = ImageProc.ImgToBmpSource(img);
-                    gs_Bmp.Save(userProfile + "\\Pictures\\TreshSample1.png", ImageFormat.Png);
+                    //gs_Bmp.Save(userProfile + "\\Pictures\\TreshSample1.png", ImageFormat.Png);
                     foreach (System.Drawing.Rectangle rect in rects)
                     {
-                        cropxTxt.Text = (rect.Left - 200).ToString();
-                        cropyTxt.Text = (rect.Top - 200).ToString();
+                        cropxTxt.Text = (rect.Left).ToString();
+                        cropyTxt.Text = (rect.Top / 5).ToString();
                         heightTxt.Text = (rect.Right / 45).ToString();
                         widthTxt.Text = (rect.Bottom / 45).ToString();
+                        cropSelector.Height = rect.Top - (rect.Bottom /45);
+                        cropSelector.Width = rect.Left - (rect.Right / 45);
                     }
                 }
             }
