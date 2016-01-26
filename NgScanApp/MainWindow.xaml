@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
-        xmlns:sel="clr-namespace:CropSelectionControl;assembly=CropSelectionControl"
         mc:Ignorable="d"
-        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080">
+        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
@@ -98,8 +97,12 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridL" Margin="0,0,286,0">
-            <Image x:Name="ScanView" Margin="0,10,0,0"/>
-            <sel:SelectionControl x:Name="cropSelector" Width="500" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Canvas x:Name="CanvasL" Height="1049" Background="Black">
+                <Image x:Name="ScanView" Height="1049" Width="1613"/>
+                <Rectangle x:Name="selRect" Fill="#7F385681" Width="500" Height="500" Canvas.Left="600" Canvas.Top="200" />
+                <Label x:Name="posLbn" Width="111" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="1502" Canvas.Top="944" Background="White"/>
+            </Canvas>
+         
         </Grid>
 
     </Grid>

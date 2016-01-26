@@ -25,7 +25,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using AForge.Imaging.Filters;
 using Microsoft.Win32;
-using CropSelectionControl;
 
 namespace NgScanApp
 {
@@ -67,7 +66,6 @@ namespace NgScanApp
                 DeviceCmb.SelectedIndex = 0;
             }
 
-            CropSelectionControl.SelectionControl selCrop = new SelectionControl();
             
         }
 
@@ -168,6 +166,7 @@ namespace NgScanApp
         }
         public void InitScan()
         {
+            getCropVal();
             ImageProc imgP = new ImageProc();
             CommonDialogClass commonDialogClass = new CommonDialogClass();
             DeviceIdCmb.SelectedIndex = DeviceCmb.SelectedIndex;
@@ -247,8 +246,6 @@ namespace NgScanApp
                         cropyTxt.Text = (rect.Top / 5).ToString();
                         heightTxt.Text = (rect.Right / 45).ToString();
                         widthTxt.Text = (rect.Bottom / 45).ToString();
-                        cropSelector.Height = rect.Top - (rect.Bottom /45);
-                        cropSelector.Width = rect.Left - (rect.Right / 45);
                     }
                 }
             }
@@ -276,6 +273,133 @@ namespace NgScanApp
             {
                 savePathTxt.Text = saveDlg.FileName;
             }
+
+        }
+        // Selection Control
+        AdornerLayer aLayer;
+
+        bool _isDown;
+        bool _isDragging;
+        bool selected = false;
+        UIElement selectedElement = null;
+
+        System.Windows.Point _startPoint;
+        private double _originalLeft;
+        private double _originalTop;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(Window1_MouseLeftButtonDown);
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(DragFinishedMouseHandler);
+            this.MouseMove += new MouseEventHandler(Window1_MouseMove);
+            this.MouseLeave += new MouseEventHandler(Window1_MouseLeave);
+
+            CanvasL.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(myCanvas_PreviewMouseLeftButtonDown);
+            CanvasL.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(DragFinishedMouseHandler);
+        }
+
+        // Handler for drag stopping on leaving the window
+        void Window1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StopDragging();
+            e.Handled = true;
+        }
+
+        // Handler for drag stopping on user choise
+        void DragFinishedMouseHandler(object sender, MouseButtonEventArgs e)
+        {
+            StopDragging();
+            e.Handled = true;
+        }
+
+        // Method for stopping dragging
+        private void StopDragging()
+        {
+            if (_isDown)
+            {
+                _isDown = false;
+                _isDragging = false;
+            }
+        }
+
+        // Hanler for providing drag operation with selected element
+        void Window1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDown)
+            {
+                if ((_isDragging == false) &&
+                    ((Math.Abs(e.GetPosition(CanvasL).X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
+                    (Math.Abs(e.GetPosition(CanvasL).Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)))
+                    _isDragging = true;
+
+                if (_isDragging)
+                {
+                    System.Windows.Point position = Mouse.GetPosition(CanvasL);
+                    Canvas.SetTop(selectedElement, position.Y - (_startPoint.Y - _originalTop));
+                    Canvas.SetLeft(selectedElement, position.X - (_startPoint.X - _originalLeft));
+                }
+            }
+        }
+
+        // Handler for clearing element selection, adorner removal
+        void Window1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (selected)
+            {
+                selected = false;
+                if (selectedElement != null)
+                {
+                    aLayer.Remove(aLayer.GetAdorners(selectedElement)[0]);
+                    selectedElement = null;
+                }
+            }
+        }
+
+        // Handler for element selection on the canvas providing resizing adorner
+        void myCanvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Remove selection on clicking anywhere the window
+            if (selected)
+            {
+                selected = false;
+                if (selectedElement != null)
+                {
+                    // Remove the adorner from the selected element
+                    aLayer.Remove(aLayer.GetAdorners(selectedElement)[0]);
+                    selectedElement = null;
+                }
+            }
+
+            // If any element except canvas is clicked, 
+            // assign the selected element and add the adorner
+            if (e.Source != CanvasL)
+            {
+                _isDown = true;
+                _startPoint = e.GetPosition(CanvasL);
+
+                selectedElement = e.Source as UIElement;
+
+                _originalLeft = Canvas.GetLeft(selectedElement);
+                _originalTop = Canvas.GetTop(selectedElement);
+
+                aLayer = AdornerLayer.GetAdornerLayer(selectedElement);
+                aLayer.Add(new ResizingAdorner(selectedElement));
+                selected = true;
+                e.Handled = true;
+            }
+        }
+
+        private void gridMouseMove(object sender, MouseEventArgs e)
+        {
+            System.Windows.Point mousePosition = e.GetPosition(null);
+            posLbn.Content = "X: " + mousePosition.X + " Y: " + mousePosition.Y;
+        }
+        private void getCropVal()
+        {
+            cropxTxt.Text = (Canvas.GetRight(selRect)).ToString();
+            cropyTxt.Text = (Canvas.GetTop(selRect)).ToString();
+            heightTxt.Text = (selRect.Height / 20).ToString();
+            widthTxt.Text = (selRect.Width / 22).ToString();
         }
     }
 }

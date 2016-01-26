@@ -83,9 +83,6 @@
       <HintPath>..\packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CropSelectionControl">
-      <HintPath>.\CropSelectionControl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -112,6 +109,7 @@
     <Compile Include="mSlider.xaml.cs">
       <DependentUpon>mSlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResizingAdorner.cs" />
     <Compile Include="WIAScanner.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
