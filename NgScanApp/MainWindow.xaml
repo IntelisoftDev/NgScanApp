@@ -46,7 +46,7 @@
                 <Button x:Name="refreshBtn" Height="30" Width="30"  Margin="143,110,27,18" Background="{x:Null}" BorderBrush="{x:Null}"></Button>
                 <Button x:Name="previewBtn" Content="Preview" HorizontalAlignment="Left" Margin="98,39,0,0" VerticalAlignment="Top" Width="75" Click="previewBtnClicked"/>
             </Grid>
-            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="23" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
+            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="38" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
             <Button x:Name="browseBtn" Content="Save As" HorizontalAlignment="Left" Margin="25,305,0,0" VerticalAlignment="Top" Width="75" Click="browseBtn_Click"/>
             <GroupBox Margin="10,381,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="White">
                 <Grid>
@@ -95,15 +95,21 @@
                 </TabControl>
                 <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="applyBtn_Click" Margin="178,170,0,0"/>
             </Grid>
-        </Grid>
-        <Grid x:Name="GridL" Margin="0,0,286,0">
-            <Canvas x:Name="CanvasL" Height="1049" Background="Black">
-                <Image x:Name="ScanView" Height="1049" Width="1613"/>
-                <Rectangle x:Name="selRect" Fill="#7F385681" Width="500" Height="500" Canvas.Left="600" Canvas.Top="200" />
-                <Label x:Name="posLbn" Width="111" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="1502" Canvas.Top="944" Background="White"/>
-            </Canvas>
-         
-        </Grid>
+            <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,797,0,0" VerticalAlignment="Top" Height="89" Width="260" Foreground="White">
+                <Grid>
+                    <Button x:Name="rotL" Content="L" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="50" Click="rotL_Click"/>
+                    <Button x:Name="rotR" Content="R" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="0,25,10,0" Click="rotR_Click"/>
+                </Grid>
+            </GroupBox>
+            <Label x:Name="posLbn" Width="110" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="White" Margin="0,0,146,46"/>
 
+        </Grid>
+        <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="#FF191919">
+            <Canvas x:Name="CanvasL" Height="1049" Background="Black" MouseMove="CanvasMouseMove">
+                <Image x:Name="ScanView" Height="875"/>
+                <Rectangle x:Name="selRect" Fill="#7F385681" Width="840" Height="798" Canvas.Left="20" SizeChanged="RectSizeChange" RenderTransformOrigin="0.5,0.5" Canvas.Top="20" Visibility="Hidden" >
+                </Rectangle>
+            </Canvas>
+        </Grid>
     </Grid>
 </Window>

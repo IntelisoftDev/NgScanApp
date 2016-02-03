@@ -15,15 +15,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AForge;
-using AForge.Imaging;
-using AForge.Math;
 using WIA;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using AForge.Imaging.Filters;
 using Microsoft.Win32;
 
 namespace NgScanApp
@@ -38,6 +34,8 @@ namespace NgScanApp
         public string local_appData = "";
         public string ScannerSettings = "";
         public string fileName = "";
+        bool CropToolReady = false;
+        private TranslateTransform transform = new TranslateTransform();
         public class scanSettings
         {
             public int colorMode { get; set; }
@@ -66,7 +64,6 @@ namespace NgScanApp
                 DeviceCmb.SelectedIndex = 0;
             }
 
-            
         }
 
         private void readSettings()
@@ -75,8 +72,6 @@ namespace NgScanApp
             {
                 scanSettings _scanSettings = new scanSettings();
                 _scanSettings.dpi = 300;
-                //_scanSettings.wInch = 8.50;
-                // _scanSettings.hInch = 11;
                 _scanSettings.cropX = 0;
                 _scanSettings.cropY = 0;
                 _scanSettings.colorMode = 0;
@@ -98,10 +93,6 @@ namespace NgScanApp
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
                     _scanSettings.dpi = (int)parseSettings("DPI");
-                   // _scanSettings.wInch = parseSettings("Width");
-                   // _scanSettings.hInch = parseSettings("Height");
-                    //_scanSettings.cropX = parseSettings("Crop X");
-                    // _scanSettings.cropY = parseSettings("Crop Y");
                     GridR.DataContext = _scanSettings;
                 };
 
@@ -127,8 +118,6 @@ namespace NgScanApp
             if (dpiTxt.Text != "")
             {
                 _scanSettings.dpi = Convert.ToInt32(dpiTxt.Text);
-                //_scanSettings.wInch = Convert.ToDouble(widthTxt.Text);
-                //_scanSettings.hInch = Convert.ToDouble(heightTxt.Text);
                 _scanSettings.cropX = Convert.ToDouble(cropxTxt.Text);
                 _scanSettings.cropY = Convert.ToDouble(cropyTxt.Text);
             }
@@ -159,14 +148,24 @@ namespace NgScanApp
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void saveImageAsFile(System.Drawing.Image img)
+        {
+            var encoder = new TiffBitmapEncoder();
+            encoder.Compression = TiffCompressOption.Ccitt4;
+            encoder.Frames.Add(BitmapFrame.Create(ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(img), PixelFormats.BlackWhite)));
 
+            using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+            {
+                encoder.Save(stream);
+            }
+        }
         private void ScanBtnClicked(object sender, RoutedEventArgs e)
         {
             InitScan();
+            CropToolReady = false;
         }
         public void InitScan()
         {
-            getCropVal();
             ImageProc imgP = new ImageProc();
             CommonDialogClass commonDialogClass = new CommonDialogClass();
             DeviceIdCmb.SelectedIndex = DeviceCmb.SelectedIndex;
@@ -177,22 +176,17 @@ namespace NgScanApp
                     MessageBox.Show("Please connect a scanner.");
                 }
                 Deskew _deskew = new Deskew();
-                var encoder = new TiffBitmapEncoder();
-                encoder.Compression = TiffCompressOption.Ccitt4;
+
                 scanSettings _scanSettings = new scanSettings();
                 List<System.Drawing.Image> images = null;
-                images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), Convert.ToDouble(cropxTxt.Text), Convert.ToDouble(cropyTxt.Text),
+                images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), (Convert.ToDouble(cropxTxt.Text)), (Convert.ToDouble(cropyTxt.Text)),
                 (Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (int)brightSl.Value,
                 (int)contrastSl.Value, colModeCmb.SelectedIndex);
+
                 foreach (System.Drawing.Image image in images)
                 {
                     ScanView.Source = ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
-                    encoder.Frames.Add(BitmapFrame.Create(ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite)));
-
-                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
-                    {
-                        encoder.Save(stream);
-                    }
+                    saveImageAsFile(image);
                 }
 
             }
@@ -205,6 +199,8 @@ namespace NgScanApp
         private void previewBtnClicked(object sender, RoutedEventArgs e)
         {
             previewScan();
+            selRect.Visibility = Visibility.Visible;
+            CropToolReady = true;
         }
         private void previewScan()
         {
@@ -221,7 +217,7 @@ namespace NgScanApp
                 foreach (System.Drawing.Image img in images)
                 {
                     //ScanView.Source = ImgToBmpSource(img);
-                    Bitmap bmp = new Bitmap(img);
+                    /*Bitmap bmp = new Bitmap(img);
                     Grayscale gs_fil = new Grayscale(0.2125, 0.7154, 0.0721);
                     Bitmap gs_Bmp = gs_fil.Apply(bmp);
                     DocumentSkewChecker skewCheck = new DocumentSkewChecker();
@@ -236,17 +232,16 @@ namespace NgScanApp
 
                     bc.FilterBlobs = true;
                     bc.ProcessImage(gs_Bmp);
-                    System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();
-
+                    System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();*/
                     ScanView.Source = ImageProc.ImgToBmpSource(img);
                     //gs_Bmp.Save(userProfile + "\\Pictures\\TreshSample1.png", ImageFormat.Png);
-                    foreach (System.Drawing.Rectangle rect in rects)
-                    {
-                        cropxTxt.Text = (rect.Left).ToString();
-                        cropyTxt.Text = (rect.Top / 5).ToString();
-                        heightTxt.Text = (rect.Right / 45).ToString();
-                        widthTxt.Text = (rect.Bottom / 45).ToString();
-                    }
+                    /* foreach (System.Drawing.Rectangle rect in rects)
+                     {
+                         cropxTxt.Text = (rect.Left).ToString();
+                         cropyTxt.Text = (rect.Top / 5).ToString();
+                         heightTxt.Text = (rect.Bottom).ToString();
+                         widthTxt.Text = (rect.Right / 45).ToString();
+                     }*/
                 }
             }
             catch (Exception ex)
@@ -273,7 +268,6 @@ namespace NgScanApp
             {
                 savePathTxt.Text = saveDlg.FileName;
             }
-
         }
         // Selection Control
         AdornerLayer aLayer;
@@ -389,17 +383,42 @@ namespace NgScanApp
             }
         }
 
-        private void gridMouseMove(object sender, MouseEventArgs e)
-        {
-            System.Windows.Point mousePosition = e.GetPosition(null);
-            posLbn.Content = "X: " + mousePosition.X + " Y: " + mousePosition.Y;
-        }
         private void getCropVal()
         {
-            cropxTxt.Text = (Canvas.GetRight(selRect)).ToString();
-            cropyTxt.Text = (Canvas.GetTop(selRect)).ToString();
-            heightTxt.Text = (selRect.Height / 20).ToString();
-            widthTxt.Text = (selRect.Width / 22).ToString();
+            widthTxt.Text = Math.Round(((selRect.Width) / 18.23), 2).ToString();
+            cropxTxt.Text = Math.Round(((Canvas.GetLeft(selRect)) * 15), 2).ToString();
+            cropyTxt.Text = Math.Round(((Canvas.GetTop(selRect)) / 19), 2).ToString();
+            heightTxt.Text = Math.Round(((Canvas.GetTop(selRect) + selRect.Height) / 19), 2).ToString();
+        }
+
+        private void CanvasMouseMove(object sender, MouseEventArgs e)
+        {
+            System.Windows.Point mousePosition = e.GetPosition(CanvasL);
+            posLbn.Content = "X: " + mousePosition.X + " Y: " + mousePosition.Y;
+        }
+
+        private void RectSizeChange(object sender, SizeChangedEventArgs e)
+        {
+            if (CropToolReady == true)
+            {
+                getCropVal();
+            }
+        }
+
+        private void rotL_Click(object sender, RoutedEventArgs e)
+        {
+            var img = System.Drawing.Image.FromFile(savePathTxt.Text);
+            img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            ScanView.Source = ImageProc.ImgToBmpSource(img);
+            saveImageAsFile(img);
+        }
+
+        private void rotR_Click(object sender, RoutedEventArgs e)
+        {
+            var img = System.Drawing.Image.FromFile(savePathTxt.Text);
+            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            ScanView.Source = ImageProc.ImgToBmpSource(img);
+            saveImageAsFile(img);
         }
     }
 }
