@@ -182,7 +182,7 @@ namespace NgScanApp
                 images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), (Convert.ToDouble(cropxTxt.Text)), (Convert.ToDouble(cropyTxt.Text)),
                 (Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (int)brightSl.Value,
                 (int)contrastSl.Value, colModeCmb.SelectedIndex);
-
+                selRect.Visibility = Visibility.Collapsed;
                 foreach (System.Drawing.Image image in images)
                 {
                     ScanView.Source = ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);

@@ -30,42 +30,84 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="RoundTab" TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Background="White" BorderBrush="#FF6BB0E0" BorderThickness="1" CornerRadius="5,0,0,0">
+                            <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="#FF6BB0E0" BorderBrush="#FF6BB0E0" BorderThickness="1" CornerRadius="5,0,0,0">
+                                    <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="5,0,0,0">
+                                    <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-    <Grid Background="Black">
-        <Grid x:Name="GridR" Width="281" Background="#FF191919" Margin="0,2,3,0" HorizontalAlignment="Right">
+    <Grid Background="White">
+        <Grid x:Name="GridR" Width="281" Background="White" Margin="0,2,3,0" HorizontalAlignment="Right">
             <Grid Width="200" Height="158" Margin="45,26,36,0" VerticalAlignment="Top">
-                <Button x:Name="ScanBtn" Height="60" Width="63" Background="{x:Null}" Margin="10,13,127,85" Click="ScanBtnClicked" BorderBrush="{x:Null}">
+                <Button x:Name="ScanBtn" Height="60" Style="{DynamicResource NoChromeButton}" Width="63" Background="{x:Null}" Margin="10,13,127,85" Click="ScanBtnClicked" BorderBrush="{x:Null}">
                     <Grid Width="48" Height="48">
-                        <Image Source="Scanner.png" Width="48" Height="48" VerticalAlignment="Top"/>
-                        <Label Content="Scan" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center"/>
+                        <Image Source="CamIco.png" Width="48" Height="48" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Button>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
-                <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="10,115,70,0" VerticalAlignment="Top" Width="120" BorderBrush="#FFACACAC" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                <ComboBox x:Name="DeviceCmb" HorizontalAlignment="Center" Margin="10,115,70,0" VerticalAlignment="Top" Width="120" BorderBrush="#FF4093CD" Background="#FF4093CD"/>
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
                 <Button x:Name="refreshBtn" Height="30" Width="30"  Margin="143,110,27,18" Background="{x:Null}" BorderBrush="{x:Null}"></Button>
                 <Button x:Name="previewBtn" Content="Preview" HorizontalAlignment="Left" Margin="98,39,0,0" VerticalAlignment="Top" Width="75" Click="previewBtnClicked"/>
             </Grid>
-            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="38" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
+            <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="38" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" BorderBrush="#FF4093CD" BorderThickness="2"/>
             <Button x:Name="browseBtn" Content="Save As" HorizontalAlignment="Left" Margin="25,305,0,0" VerticalAlignment="Top" Width="75" Click="browseBtn_Click"/>
-            <GroupBox Margin="10,381,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="White">
+            <GroupBox Margin="10,381,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Header="Manual Crop" Foreground="#FF060606" BorderBrush="#FF4093CD" BorderThickness="2">
                 <Grid>
                     <TextBox x:Name="widthTxt" HorizontalAlignment="Left" Height="17" Margin="67,19,0,0" TextWrapping="Wrap" Text="{Binding wInch, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="42"/>
-                    <Label x:Name="widthLbn" Content="Width" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="52" Foreground="#FFFDFDFD" Height="30"/>
-                    <Label x:Name="heightLbn" Content="Height" Height="30" Width="52" Foreground="White" Margin="10,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"></Label>
+                    <Label x:Name="widthLbn" Content="Width" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="52" Foreground="Black" Height="30"/>
+                    <Label x:Name="heightLbn" Content="Height" Height="30" Width="52" Foreground="Black" Margin="10,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"></Label>
                     <TextBox x:Name="heightTxt" HorizontalAlignment="Left" Height="17" Margin="67,54,0,0" TextWrapping="Wrap" Text="{Binding hInch, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="42"/>
-                    <Label Height="30" Width="52" Content="Crop X" Foreground="White" Margin="127,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label Height="30" Width="52" Content="Crop X" Foreground="Black" Margin="127,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <TextBox x:Name="cropxTxt" Text="{Binding cropX, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="184,16,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.667,1.676"></TextBox>
-                    <Label Height="30" Width="52" Content="Crop Y" Foreground="White" Margin="127,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label Height="30" Width="52" Content="Crop Y" Foreground="Black" Margin="127,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <TextBox x:Name="cropyTxt" Height="17" Text="{Binding cropY, UpdateSourceTrigger=Default}" Width="42" Margin="184,54,0,0" RenderTransformOrigin="0.631,0.382" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
-                    <Label x:Name="dpiLbn" Height="25" Width="42" Content="DPI" Foreground="White" Margin="90,81,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label x:Name="dpiLbn" Height="25" Width="42" Content="DPI" Foreground="Black" Margin="90,81,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <TextBox x:Name="dpiTxt" Text="{Binding dpi, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="129,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
                 </Grid>
             </GroupBox>
-            <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,226,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,226,0,0" VerticalAlignment="Top" Foreground="Black"/>
             <Grid x:Name="propList" Height="200" Width="263" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,0, 270">
                 <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="253" BorderBrush="{x:Null}" Background="#FF646464">
-                    <TabItem Header="General" Background="#FF464646" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="0,0.5">
+                    <TabItem Header="General" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50">
+                        <TabItem.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF4093CD" Offset="0"/>
+                                <GradientStop Color="#FF4093CD" Offset="1"/>
+                                <GradientStop Color="#FF2090B8" Offset="0.537"/>
+                            </LinearGradientBrush>
+                        </TabItem.Background>
                         <Grid Background="#FF646464" Margin="0,0,-12,0" Height="100" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Grid Width="124" Height="100" Margin="10,10,0,-10" HorizontalAlignment="Left">
                                 <Label Content="Color Mode" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top" Foreground="White"/>
@@ -77,7 +119,7 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Brightness" Background="#FF464646" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <TabItem Header="Brightness" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderBrush="{x:Null}">
                         <Grid Margin="0,9,0,-9">
                             <Grid.Background>
                                 <SolidColorBrush Color="#FF646464"/>
@@ -95,21 +137,36 @@
                 </TabControl>
                 <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="applyBtn_Click" Margin="178,170,0,0"/>
             </Grid>
-            <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,797,0,0" VerticalAlignment="Top" Height="89" Width="260" Foreground="White">
+            <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,797,0,0" VerticalAlignment="Top" Height="89" Width="260" Foreground="Black" BorderBrush="#FF4093CD" BorderThickness="2">
                 <Grid>
-                    <Button x:Name="rotL" Content="L" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="50" Click="rotL_Click"/>
-                    <Button x:Name="rotR" Content="R" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="0,25,10,0" Click="rotR_Click"/>
+                    <Button x:Name="rotL" Style="{DynamicResource NoChromeButton}"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="40" Click="rotL_Click">
+                        <Image Source="rotateL.png" VerticalAlignment="Top"/>
+                    </Button>
+                    <Button x:Name="rotR" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Margin="0,25,10,0" Click="rotR_Click">
+                        <Image Source="rotateR.png"/>
+                    </Button>
                 </Grid>
             </GroupBox>
-            <Label x:Name="posLbn" Width="110" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="White" Margin="0,0,146,46"/>
+            <Label x:Name="posLbn" Width="110" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="White" Margin="0,0,146,46" Visibility="Hidden"/>
 
         </Grid>
-        <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="#FF191919">
-            <Canvas x:Name="CanvasL" Height="1049" Background="Black" MouseMove="CanvasMouseMove">
+        <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="White">
+            <Canvas x:Name="CanvasL" Height="1049" Background="White" MouseMove="CanvasMouseMove" Margin="0,0,27,0">
                 <Image x:Name="ScanView" Height="875"/>
                 <Rectangle x:Name="selRect" Fill="#7F385681" Width="840" Height="798" Canvas.Left="20" SizeChanged="RectSizeChange" RenderTransformOrigin="0.5,0.5" Canvas.Top="20" Visibility="Hidden" >
                 </Rectangle>
             </Canvas>
         </Grid>
+        <Border BorderBrush="#FF969696" BorderThickness="0.01" HorizontalAlignment="Left" Height="527" Margin="1623,270,0,0" VerticalAlignment="Top" Width="2" CornerRadius="5">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FF646464" Offset="0.53"/>
+                    <GradientStop Color="#FFC8C8C8" Offset="0.774"/>
+                    <GradientStop Color="#FFC8C8C8" Offset="0.3"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
     </Grid>
 </Window>
