@@ -150,13 +150,102 @@ namespace NgScanApp
         }
         private void saveImageAsFile(System.Drawing.Image img)
         {
-            var encoder = new TiffBitmapEncoder();
-            encoder.Compression = TiffCompressOption.Ccitt4;
-            encoder.Frames.Add(BitmapFrame.Create(ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(img), PixelFormats.BlackWhite)));
+            string extension = readExtension(savePathTxt.Text);
 
-            using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+            switch (extension)
             {
-                encoder.Save(stream);
+                case "jpeg":
+                    var JPEGenc = new JpegBitmapEncoder();
+                    JPEGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+                    {
+                        JPEGenc.Save(stream);
+                    }
+                    break;
+                case "jpg":
+                    var JPGenc = new JpegBitmapEncoder();
+                    JPGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+                    {
+                        JPGenc.Save(stream);
+                    }
+                    break;
+                case "png":
+                    var PNGenc = new PngBitmapEncoder();
+                    PNGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+                    {
+                        PNGenc.Save(stream);
+                    }
+                    break;
+
+                case "tif":
+                    var TIFenc = new TiffBitmapEncoder();
+                    // get TIFF compression type
+                    if (tifTypeCBX.SelectedIndex == 0)
+                    {
+                        TIFenc.Compression = TiffCompressOption.Ccitt3;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 1)
+                    {
+                        TIFenc.Compression = TiffCompressOption.Ccitt4;
+                        MessageBox.Show("Ccitt4 Selected.");
+                    }
+                    if (tifTypeCBX.SelectedIndex == 2)
+                    {
+                        TIFenc.Compression = TiffCompressOption.Lzw;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 3)
+                    {
+                        TIFenc.Compression = TiffCompressOption.None;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 4)
+                    {
+                        TIFenc.Compression = TiffCompressOption.Rle;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 5)
+                    {
+                        TIFenc.Compression = TiffCompressOption.Zip;
+                    }
+                    TIFenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+                    {
+                        TIFenc.Save(stream);
+                    }
+                    break;
+                case "tiff":
+                    var TIFFenc = new TiffBitmapEncoder();
+                    // get TIFF compression type
+                    if (tifTypeCBX.SelectedIndex == 0)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.Ccitt3;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 1)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.Ccitt4;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 2)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.Lzw;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 3)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.None;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 4)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.Rle;
+                    }
+                    if (tifTypeCBX.SelectedIndex == 5)
+                    {
+                        TIFFenc.Compression = TiffCompressOption.Zip;
+                    }
+                    TIFFenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
+                    using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
+                    {
+                        TIFFenc.Save(stream);
+                    }
+                    break;
             }
         }
         private void ScanBtnClicked(object sender, RoutedEventArgs e)
@@ -255,7 +344,7 @@ namespace NgScanApp
             saveSettings();
         }
 
-        private void browseBtn_Click(object sender, RoutedEventArgs e)
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveDlg = new SaveFileDialog();
 
@@ -419,6 +508,22 @@ namespace NgScanApp
             img.RotateFlip(RotateFlipType.Rotate90FlipNone);
             ScanView.Source = ImageProc.ImgToBmpSource(img);
             saveImageAsFile(img);
+        }
+
+        private void SaveTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (readExtension(savePathTxt.Text) == ".tif")
+            {
+                tifTypeCBX.Visibility = Visibility.Visible;
+            }
+            else
+                tifTypeCBX.Visibility = Visibility.Hidden;
+        }
+        private string readExtension(string file)
+        {
+            string ext = Regex.Match(System.IO.Path.GetFileName(savePathTxt.Text), @"\.\w*").Value;
+
+            return ext;
         }
     }
 }
