@@ -30,22 +30,22 @@ namespace NgScanApp
     public partial class MainWindow : Window
     {
         static string userProfile = Environment.GetEnvironmentVariable("userprofile");
-        public string vendor = "";
-        public string local_appData = "";
-        public string ScannerSettings = "";
+        private string vendor = "";
+        private string local_appData = "";
+        private string ScannerSettings = "";
         public string fileName = "";
         bool CropToolReady = false;
         private TranslateTransform transform = new TranslateTransform();
-        public class scanSettings
+        private class scanSettings
         {
+            public int brightness { get; set; }
             public int colorMode { get; set; }
+            public int contrast { get; set; }
             public double cropX { get; set; }
             public double cropY { get; set; }
-            public double wInch { get; set; }
-            public double hInch { get; set; }
             public int dpi { get; set; }
-            public int brightness { get; set; }
-            public int contrast { get; set; }
+            public double hInch { get; set; }
+            public double wInch { get; set; }
         }
 
 
@@ -110,20 +110,18 @@ namespace NgScanApp
 
         private void saveSettings()
         {
+            SettingsDlg settingsdlg = new SettingsDlg();
             scanSettings _scanSettings = new scanSettings();
-            _scanSettings.colorMode = colModeCmb.SelectedIndex;
-            _scanSettings.brightness = (int)brightSl.Value;
-            _scanSettings.contrast = (int)contrastSl.Value;
+            _scanSettings.colorMode = (int)parseSettings("Color Mode");
+            _scanSettings.brightness = (int)parseSettings("Brightness");
+            _scanSettings.contrast = (int)parseSettings("Contrast");
 
             if (dpiTxt.Text != "")
             {
                 _scanSettings.dpi = Convert.ToInt32(dpiTxt.Text);
-                _scanSettings.cropX = Convert.ToDouble(cropxTxt.Text);
-                _scanSettings.cropY = Convert.ToDouble(cropyTxt.Text);
             }
             string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
-            "DPI: " + _scanSettings.dpi, "Width: " + _scanSettings.wInch, "Height: " + _scanSettings.hInch, "Crop X: " + _scanSettings.cropX,
-            "Crop Y: " + _scanSettings.cropY};
+            "DPI: " + _scanSettings.dpi};
             System.IO.File.WriteAllLines(ScannerSettings, allSettings);
         }
 
@@ -154,7 +152,7 @@ namespace NgScanApp
 
             switch (extension)
             {
-                case "jpeg":
+                case ".jpeg":
                     var JPEGenc = new JpegBitmapEncoder();
                     JPEGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
                     using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
@@ -162,7 +160,7 @@ namespace NgScanApp
                         JPEGenc.Save(stream);
                     }
                     break;
-                case "jpg":
+                case ".jpg":
                     var JPGenc = new JpegBitmapEncoder();
                     JPGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
                     using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
@@ -170,7 +168,7 @@ namespace NgScanApp
                         JPGenc.Save(stream);
                     }
                     break;
-                case "png":
+                case ".png":
                     var PNGenc = new PngBitmapEncoder();
                     PNGenc.Frames.Add(BitmapFrame.Create(ImageProc.ImgToBmpSource(img)));
                     using (var stream = new FileStream(savePathTxt.Text, FileMode.Create, FileAccess.Write))
@@ -179,7 +177,7 @@ namespace NgScanApp
                     }
                     break;
 
-                case "tif":
+                case ".tif":
                     var TIFenc = new TiffBitmapEncoder();
                     // get TIFF compression type
                     if (tifTypeCBX.SelectedIndex == 0)
@@ -189,7 +187,6 @@ namespace NgScanApp
                     if (tifTypeCBX.SelectedIndex == 1)
                     {
                         TIFenc.Compression = TiffCompressOption.Ccitt4;
-                        MessageBox.Show("Ccitt4 Selected.");
                     }
                     if (tifTypeCBX.SelectedIndex == 2)
                     {
@@ -213,7 +210,7 @@ namespace NgScanApp
                         TIFenc.Save(stream);
                     }
                     break;
-                case "tiff":
+                case ".tiff":
                     var TIFFenc = new TiffBitmapEncoder();
                     // get TIFF compression type
                     if (tifTypeCBX.SelectedIndex == 0)
@@ -267,15 +264,24 @@ namespace NgScanApp
                 Deskew _deskew = new Deskew();
 
                 scanSettings _scanSettings = new scanSettings();
+
                 List<System.Drawing.Image> images = null;
                 images = WIAScanner.AutoScan((string)DeviceIdCmb.SelectedItem, Convert.ToInt32(dpiTxt.Text), (Convert.ToDouble(cropxTxt.Text)), (Convert.ToDouble(cropyTxt.Text)),
-                (Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (int)brightSl.Value,
-                (int)contrastSl.Value, colModeCmb.SelectedIndex);
+                (Convert.ToDouble(widthTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (Convert.ToDouble(heightTxt.Text) * Convert.ToDouble(dpiTxt.Text)), (int)parseSettings("Brightness"),
+                (int)parseSettings("Contrast"), (int)parseSettings("Color Mode"));
                 selRect.Visibility = Visibility.Collapsed;
                 foreach (System.Drawing.Image image in images)
                 {
-                    ScanView.Source = ImageProc.setPixelFormat(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
-                    saveImageAsFile(image);
+                    if ((int)parseSettings("Color Mode") == 0)
+                    {
+                        ScanView.Source = ImageProc.setPixelFormat1(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
+                        saveImageAsFile(ImageProc.setPixelFormat2(ImageProc.ImgToBmpSource(image), System.Drawing.Imaging.PixelFormat.Format1bppIndexed));
+                    }
+                    else
+                    {
+                        ScanView.Source = ImageProc.ImgToBmpSource(image);
+                        saveImageAsFile(image);
+                    }
                 }
 
             }
@@ -524,6 +530,12 @@ namespace NgScanApp
             string ext = Regex.Match(System.IO.Path.GetFileName(savePathTxt.Text), @"\.\w*").Value;
 
             return ext;
+        }
+
+        private void settingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsDlg settingsDlg = new SettingsDlg();
+            settingsDlg.Show();
         }
     }
 }

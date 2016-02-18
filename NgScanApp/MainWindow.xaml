@@ -13,21 +13,19 @@
         <Grid x:Name="GridR" Width="281" Background="White" Margin="0,2,3,0" HorizontalAlignment="Right">
             <Grid Width="200" Height="158" Margin="45,26,36,0" VerticalAlignment="Top">
                 <Button x:Name="ScanBtn" Height="60" Style="{DynamicResource NoChromeButton}" Width="63" Background="{x:Null}" Margin="10,13,127,85" Click="ScanBtnClicked" BorderBrush="{x:Null}">
-                    <StackPanel>
-                        <Image Source="CamIco.png" Width="48" Height="48"/>
-                        <!--<Label Content="Scan" />-->
-                    </StackPanel>
+                    <Grid Width="48" Height="48">
+                        <Image Source="CamIco.png" Width="48" Height="48" VerticalAlignment="Bottom"/>
+                    </Grid>
                 </Button>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
                 <ComboBox x:Name="DeviceCmb" Style="{DynamicResource FancyCombo}" HorizontalAlignment="Center" Margin="10,115,70,0" VerticalAlignment="Top" Width="120"/>
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
                 <Button x:Name="refreshBtn" Height="30" Width="30"  Margin="143,110,27,18" Background="{x:Null}" BorderBrush="{x:Null}"></Button>
                 <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" 
-                        HorizontalAlignment="Left" Margin="98,21,0,0" VerticalAlignment="Top" Click="previewBtnClicked">
-                    <StackPanel>
-                        <Image Source="Preview.png" Height="40" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Content="Preview" />
-                    </StackPanel>
+                        HorizontalAlignment="Left" Margin="98,21,0,0" VerticalAlignment="Top" Width="45" Click="previewBtnClicked">
+                    <Grid>
+                        <Image Source="Preview.png" Height="40" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                    </Grid>
                 </Button>
             </Grid>
             <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="38" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237" BorderBrush="#FF6BB0E0" BorderThickness="2" SelectionBrush="#FF6BB0E0" TextChanged="SaveTextChanged"/>
@@ -52,50 +50,7 @@
                 </Grid>
             </GroupBox>
             <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,226,0,0" VerticalAlignment="Top" Foreground="Black"/>
-            <Grid x:Name="propList" Height="200" Width="240" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,0, 270">
-                <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="253" BorderBrush="{x:Null}" Background="#FF646464">
-                    <TabItem Header="General" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50">
-                        <TabItem.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FF4093CD" Offset="0"/>
-                                <GradientStop Color="#FF4093CD" Offset="1"/>
-                                <GradientStop Color="#FF2090B8" Offset="0.537"/>
-                            </LinearGradientBrush>
-                        </TabItem.Background>
-                        <Grid Background="#FF646464" Margin="0,0,-12,0" Height="100" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <Grid Width="124" Height="100" Margin="10,10,0,-10" HorizontalAlignment="Left">
-                                <Label Content="Color Mode" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top" Foreground="White"/>
-                                <ComboBox x:Name="colModeCmb" Style="{DynamicResource FancyCombo}" SelectedIndex="{Binding colorMode}" Width="125" Height="20" Margin="-6,31,0,49" HorizontalAlignment="Left">
-                                    <ComboBoxItem Content="Black and White" HorizontalAlignment="Left" Width="118"/>
-                                    <ComboBoxItem Content="Color" HorizontalAlignment="Left" Width="118"/>
-                                    <ComboBoxItem Content="Gray Scale" HorizontalAlignment="Left" Width="118"/>
-                                </ComboBox>
-                            </Grid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Brightness" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderBrush="{x:Null}">
-                        <Grid Margin="0,9,0,-9">
-                            <Grid.Background>
-                                <SolidColorBrush Color="#FF646464"/>
-                            </Grid.Background>
-                            <Grid Height="112" Margin="10,10,49,0" VerticalAlignment="Top">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="59*"/>
-                                    <ColumnDefinition Width="129*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label x:Name="label0" Content="Brightness" Margin="10,3,0,0" HorizontalAlignment="Left" Width="80" Height="24" VerticalAlignment="Top" Foreground="White" Grid.ColumnSpan="2"/>
-                                <Slider  Maximum="255" Style="{DynamicResource AppSliderStyle}" TickPlacement="BottomRight" TickFrequency="5" Ticks="" x:Name="brightSl" Margin="15,27,59,62" Value="{Binding brightness}" Background="#FF464646" Grid.ColumnSpan="2" />
-                                <TextBox x:Name="textBox" Height="20"  Width="45" TextWrapping="Wrap" Text="{Binding Value, ElementName=brightSl, UpdateSourceTrigger=Default}"  Margin="84,28,0,64" RenderTransformOrigin="1.212,-0.568" Grid.Column="1"/>
-                                <Label x:Name="label1" Content="Contrast" Margin="5,50,128,0" Height="24" VerticalAlignment="Top" RenderTransformOrigin="2.169,0.41" Width="55" Foreground="White" Grid.ColumnSpan="2"/>
-                                <Slider x:Name="contrastSl" Style="{DynamicResource AppSliderStyle}" Value="{Binding contrast}" Margin="10,74,64,10" Maximum="255" TickPlacement="BottomRight" TickFrequency="5" RenderTransformOrigin="-0.745,0.332" Background="#FF464646" Grid.ColumnSpan="2"/>
-                                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="84,77,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=contrastSl, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.722,-0.329" Grid.Column="1"/>
-                            </Grid>
-                        </Grid>
-                    </TabItem>
-                </TabControl>
-                <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="applyBtn_Click" Margin="178,170,0,0"/>
-            </Grid>
-            <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,797,0,0" VerticalAlignment="Top" Height="89" Width="237" Foreground="Black" BorderBrush="#FF6BB0E0" BorderThickness="2">
+            <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,550,0,0" VerticalAlignment="Top" Height="89" Width="237" Foreground="Black" BorderBrush="#FF6BB0E0" BorderThickness="2">
                 <Grid>
                     <Button x:Name="rotL" Style="{DynamicResource NoChromeButton}"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="40" Click="rotL_Click">
                         <Image Source="rotateL.png" VerticalAlignment="Top"/>
@@ -107,13 +62,15 @@
             </GroupBox>
             <Label x:Name="posLbn" Width="110" Height="25" Foreground="#FF040404" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="White" Margin="0,0,146,46" Visibility="Hidden"/>
             <ComboBox x:Name="tifTypeCBX" Style="{DynamicResource FancyCombo}" HorizontalAlignment="Left" Margin="125,305,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="2" Visibility="Hidden">
-                <ComboBoxItem Content="Ccitt3"/>
-                <ComboBoxItem Content="Ccitt4"/>
-                <ComboBoxItem Content="Lzw"/>
+                <ComboBoxItem Content="CCITT T.4"/>
+                <ComboBoxItem Content="CCITT T.6"/>
+                <ComboBoxItem Content="LZW"/>
                 <ComboBoxItem Content="None"/>
-                <ComboBoxItem Content="Rle"/>
-                <ComboBoxItem Content="Zip"/>
+                <ComboBoxItem Content="RLE"/>
+                <ComboBoxItem Content="ZIP"/>
             </ComboBox>
+            <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Right" VerticalAlignment="Top" Width="74" Click="applyBtn_Click" Margin="0,520,36,0"/>
+            <Button x:Name="settingsBtn" Content="Settings" HorizontalAlignment="Left" Margin="170,666,0,0" VerticalAlignment="Top" Width="75" Click="settingsBtn_Click"/>
 
         </Grid>
         <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="White">

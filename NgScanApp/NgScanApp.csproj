@@ -110,6 +110,9 @@
       <DependentUpon>mSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizingAdorner.cs" />
+    <Compile Include="SettingsDlg.xaml.cs">
+      <DependentUpon>SettingsDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WIAScanner.cs" />
     <Page Include="Decorations.xaml">
       <SubType>Designer</SubType>
@@ -128,6 +131,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="mSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
