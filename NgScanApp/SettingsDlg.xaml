@@ -5,38 +5,209 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="SettingsDlg" Height="300" Width="300">
+        Title="SettingsDlg" Height="300" Width="315">
     <Window.Resources>
-        <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+        <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Chrome" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#ADADAD"/>
+                                <Setter Property="Opacity" TargetName="Chrome" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundTab" TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Background="White" BorderBrush="#FF6BB0E0" BorderThickness="1.5" CornerRadius="5,0,0,0">
+                            <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="False"/>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TabItem Foreground="White">
+                                        <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                                    </TabItem>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border Background="#FF6BB0E0" BorderBrush="#FF6BB0E0" BorderThickness="1.5" CornerRadius="5,0,0,0">
+                                        <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="White" BorderBrush="#FF333333" BorderThickness="1.5" CornerRadius="5,0,0,0">
+                                    <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="FancyCombo" TargetType="{x:Type ComboBox}">
+            <Setter Property="Background" Value="#FF6BB0E0"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#FF6BB0E0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                            Name="ToggleButton"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                            Foreground="{TemplateBinding Foreground}"
+                                Style="{DynamicResource ComboBoxToggleButton}"
+                                Grid.Column="2"
+                                Focusable="false"
+                                IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press"></ToggleButton>
+                            <ContentPresenter
+                                Name="ContentSite"
+                                IsHitTestVisible="False"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                Margin="10,3,30,3"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                Style="{x:Null}"
+                                Template="{DynamicResource ComboBoxTextBox}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="3,3,23,3"
+                                Focusable="True"                               
+                                Visibility="Hidden"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True"
+                                Focusable="False"
+                                PopupAnimation="Slide">
+                                <Grid
+                                  Name="DropDown"
+                                  SnapsToDevicePixels="True"               
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border
+                                        x:Name="DropDownBorder"
+                                        Background="White"
+                                        BorderThickness="2"
+                                        BorderBrush="Gray"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border
+                                  Name="Border"
+                                    Padding="2"
+                                    Margin="2"
+                                    BorderThickness="2"
+                                    CornerRadius="0"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent" >
+
+                            <TextBlock TextAlignment="Center">
+                                        <ContentPresenter />
+                            </TextBlock>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#996BB0E0"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="32" />
                             </Grid.ColumnDefinitions>
                             <Border
-								x:Name="Border"
-								Grid.ColumnSpan="2"
-								CornerRadius="0"
-								Background="{TemplateBinding Background}"
-								BorderBrush="{TemplateBinding BorderBrush}"
-								BorderThickness="2" />
+                          x:Name="Border"
+                          Grid.ColumnSpan="2"
+                          CornerRadius="0"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="2" />
                             <Border
-								Grid.Column="0"
-								CornerRadius="0"
-								Background="Transparent"
-								BorderBrush="Transparent"
-								BorderThickness="10" />
+                          Grid.Column="0"
+                          CornerRadius="0"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          BorderThickness="10" />
                             <Path
-								x:Name="Arrow"
-								Grid.Column="1"    
-								Fill="{TemplateBinding Foreground}"
-								Stroke="{TemplateBinding Foreground}"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Data="M 0 0 L 8 12 L 16 0 Z"/>
+                          x:Name="Arrow"
+                          Grid.Column="1"    
+                          Fill="{TemplateBinding Foreground}"
+                          Stroke="{TemplateBinding Foreground}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Data="M 0 0 L 8 12 L 16 0 Z"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
@@ -50,135 +221,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
             <Border x:Name="PART_ContentHost" Focusable="True" />
         </ControlTemplate>
-        <Style x:Key="FancyCombo" TargetType="{x:Type ComboBox}">
-            <Setter Property="Background" Value="#FF6BB0E0"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="#FF6BB0E0"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBox}">
-                        <Grid>
-                            <ToggleButton
-								x:Name="ToggleButton"
-								BorderBrush="{TemplateBinding BorderBrush}"
-								Background="{TemplateBinding Background}"
-								Foreground="{TemplateBinding Foreground}"
-								Style="{DynamicResource ComboBoxToggleButton}"
-								Grid.Column="2"
-								Focusable="false"
-								IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-								ClickMode="Press"/>
-                            <ContentPresenter
-								x:Name="ContentSite"
-								IsHitTestVisible="False"
-								Content="{TemplateBinding SelectionBoxItem}"
-								ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-								ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-								Margin="10,3,30,3"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Center" />
-                            <TextBox x:Name="PART_EditableTextBox"
-								Style="{x:Null}"
-								Template="{DynamicResource ComboBoxTextBox}"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Margin="3,3,23,3"
-								Focusable="True"                               
-								Visibility="Hidden"
-								IsReadOnly="{TemplateBinding IsReadOnly}"/>
-                            <Popup
-								x:Name="Popup"
-								Placement="Bottom"
-								IsOpen="{TemplateBinding IsDropDownOpen}"
-								AllowsTransparency="True"
-								Focusable="False"
-								PopupAnimation="Slide">
-                                <Grid
-									x:Name="DropDown"
-									SnapsToDevicePixels="True"               
-									MinWidth="{TemplateBinding ActualWidth}"
-									MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border
-										x:Name="DropDownBorder"
-										Background="White"
-										BorderThickness="2"
-										BorderBrush="Gray"/>
-                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                    </ScrollViewer>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="RoundTab" TargetType="{x:Type TabItem}">
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Border Background="White" BorderBrush="#FF6BB0E0" BorderThickness="1.5" CornerRadius="5,0,0,0">
-                            <ContentPresenter Content="{Binding Header, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsSelected" Value="False"/>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <TabItem Foreground="White">
-                                    <ContentPresenter Content="{Binding Header, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}"/>
-                                </TabItem>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Border Background="#FF6BB0E0" BorderBrush="#FF6BB0E0" BorderThickness="1.5" CornerRadius="5,0,0,0">
-                                    <ContentPresenter Content="{Binding Header, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </MultiTrigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Border Background="White" BorderBrush="Black" BorderThickness="1.5" CornerRadius="5,0,0,0">
-                                    <ContentPresenter Content="{Binding Header, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="SliderThumbStyle" TargetType="Thumb">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="OverridesDefaultStyle" Value="false"/>
             <Setter Property="Height" Value="18"/>
             <Setter Property="Width" Value="18"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Thumb}">
+                    <ControlTemplate TargetType="Thumb">
                         <Ellipse  Stroke="LightBlue"
-							StrokeThickness="1"
-							x:Name="Ellipse" 
-							Fill="#FF6BB0E0" />
+                          StrokeThickness="1"
+                          Name="Ellipse" 
+                          Fill="#FF6BB0E0" />
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Ellipse" Property="Fill" Value="DarkGray"/>
@@ -191,37 +248,37 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="{x:Type Slider}" x:Key="AppSliderStyle">
+        <Style TargetType="Slider" x:Key="AppSliderStyle">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Slider}">
+                    <ControlTemplate TargetType="Slider">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" x:Name="row" />
+                                <RowDefinition Height="auto" Name="row" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" x:Name="column" />
+                                <ColumnDefinition Width="*" Name="column" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="PART_Border"
-								BorderBrush="#848484" BorderThickness="6"
-								Padding="2"
-								Grid.Row="1" Grid.Column="1"
-								Width="{TemplateBinding Width}"
-								Height="4"
-								Background="#c1c1c1"
-								HorizontalAlignment="Stretch"
-								VerticalAlignment="Center" />
-                            <Track x:Name="PART_Track"
-								HorizontalAlignment="Stretch"
-								VerticalAlignment="Center"
-								Grid.Row="1" Grid.Column="1"
-								Width="{TemplateBinding Width}"
-								Height="18">
+                            <Border Name="PART_Border"
+                           BorderBrush="#848484" BorderThickness="6"
+                           Padding="2"
+                          Grid.Row="1" Grid.Column="1"
+                           Width="{TemplateBinding Width}"
+                           Height="4"
+                           Background="#c1c1c1"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" />
+                            <Track Name="PART_Track"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Grid.Row="1" Grid.Column="1"
+                              Width="{TemplateBinding Width}"
+                              Height="18">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource SliderThumbStyle}" />
                                 </Track.Thumb>
@@ -231,44 +288,63 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="RoundBlueButton" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle Fill="#FF6BB0E0" Stroke="#FF6BB0E0" Width="40" Height="20" RadiusX="5" RadiusY="5" />
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
-    <Grid>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="228" VerticalAlignment="Top" Width="292" BorderBrush="{x:Null}" Background="#FF646464">
-            <TabItem Header="General" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50">
-                <TabItem.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF4093CD" Offset="0"/>
-                        <GradientStop Color="#FF4093CD" Offset="1"/>
-                        <GradientStop Color="#FF2090B8" Offset="0.537"/>
-                    </LinearGradientBrush>
-                </TabItem.Background>
-                <Grid x:Name="settingsGrid" Background="#FF646464" Height="201" VerticalAlignment="Top" HorizontalAlignment="Left" Width="290" Margin="0,0,-4,0">
-                    <Label Content="Color Mode" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top" Foreground="White"/>
-                    <ComboBox x:Name="colModeCmb" Style="{DynamicResource FancyCombo}" SelectedIndex="{Binding colorMode}" Width="125" Height="20" Margin="0,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <ComboBoxItem Content="Black and White" HorizontalAlignment="Left" Width="118"/>
-                        <ComboBoxItem Content="Color" HorizontalAlignment="Left" Width="118"/>
-                        <ComboBoxItem Content="Gray Scale" HorizontalAlignment="Left" Width="118"/>
-                    </ComboBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Brightness" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderBrush="{x:Null}">
-                <Grid Margin="0,9,0,-9" Background="#FF646464">
+    <Grid x:Name="settingsGrid">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="228" VerticalAlignment="Top" Width="302" BorderBrush="{x:Null}" Background="#FF646464">
+            <TabItem Header="Brightness" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderBrush="{x:Null}" Background="{x:Null}">
+                <Grid Background="#FF646464" Margin="0,1,-2,-1">
                     <Grid Height="112" Margin="10,10,49,0" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="59*"/>
                             <ColumnDefinition Width="129*"/>
                         </Grid.ColumnDefinitions>
-                        <Label x:Name="label0" Content="Brightness" Margin="10,3,0,0" HorizontalAlignment="Left" Width="80" Height="24" VerticalAlignment="Top" Foreground="White" Grid.ColumnSpan="2"/>
-                        <Slider  Maximum="255" Style="{DynamicResource AppSliderStyle}" TickPlacement="BottomRight" TickFrequency="5" Ticks="" x:Name="brightSl" Margin="15,27,59,62" Value="{Binding brightness}" Background="#FF464646" Grid.ColumnSpan="2" />
-                        <TextBox x:Name="textBox" Height="20"  Width="45" TextWrapping="Wrap" Text="{Binding Value, ElementName=brightSl, UpdateSourceTrigger=Default}"  Margin="84,28,0,64" RenderTransformOrigin="1.212,-0.568" Grid.Column="1"/>
-                        <Label x:Name="label1" Content="Contrast" Margin="5,50,128,0" Height="24" VerticalAlignment="Top" RenderTransformOrigin="2.169,0.41" Width="55" Foreground="White" Grid.ColumnSpan="2"/>
+                        <Label x:Name="label0" Content="Brightness" Margin="10,3,0,0" HorizontalAlignment="Left" Width="65" Height="26" VerticalAlignment="Top" Foreground="White"/>
+                        <Slider  Maximum="255" Style="{DynamicResource AppSliderStyle}" TickPlacement="BottomRight" TickFrequency="5" Ticks="" x:Name="brightSl" Margin="9,28,66,61" Value="{Binding brightness}" Background="#FF464646" Grid.ColumnSpan="2" />
+                        <TextBox x:Name="textBox" Height="20"  Width="45" TextWrapping="Wrap" Text="{Binding Value, ElementName=brightSl, UpdateSourceTrigger=Default}"  Margin="101,28,10,64" RenderTransformOrigin="1.212,-0.568" Grid.Column="1"/>
+                        <Label x:Name="label1" Content="Contrast" Margin="16,50,0,0" Height="24" VerticalAlignment="Top" RenderTransformOrigin="2.169,0.41" Width="55" Foreground="White"/>
                         <Slider x:Name="contrastSl" Style="{DynamicResource AppSliderStyle}" Value="{Binding contrast}" Margin="10,74,64,10" Maximum="255" TickPlacement="BottomRight" TickFrequency="5" RenderTransformOrigin="-0.745,0.332" Background="#FF464646" Grid.ColumnSpan="2"/>
-                        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="84,77,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=contrastSl, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.722,-0.329" Grid.Column="1"/>
+                        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="20" Margin="105,74,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=contrastSl, UpdateSourceTrigger=Default}" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.722,-0.329" Grid.Column="1"/>
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Color" Style="{DynamicResource RoundTab}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" BorderBrush="{x:Null}" Background="{x:Null}">
+                <Grid  Background="#FF646464" Height="201" VerticalAlignment="Top" HorizontalAlignment="Left" Width="302" Margin="-1,0,-5,0">
+                    <Label Content="Color Mode" HorizontalAlignment="Left" Margin="37,0,0,0" VerticalAlignment="Top" Foreground="White"/>
+                    <ComboBox x:Name="colModeCmb" Style="{DynamicResource FancyCombo}" SelectedIndex="{Binding colorMode}" Width="125" Height="20" Margin="10,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ComboBoxItem Content="Black and White" HorizontalAlignment="Left" Width="118" Foreground="Black"/>
+                        <ComboBoxItem Content="Color" HorizontalAlignment="Left" Width="118" Background="White" Foreground="Black"/>
+                        <ComboBoxItem Content="Gray Scale" HorizontalAlignment="Left" Width="118" Foreground="Black"/>
+                    </ComboBox>
+                    <GroupBox x:Name="groupBox" Header="Bits Per Pixel" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Height="120" Width="167" Foreground="White" BorderBrush="{x:Null}">
+                        <Grid>
+                            <RadioButton x:Name="bpp1Rb" Content="1bpp" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="bpp8Rb" Content="8bpp" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="bpp24Rb" Content="24bpp" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="bpp32Rb" Content="32bpp" HorizontalAlignment="Left" Margin="100,50,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
         </TabControl>
-        <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Click="applyBtn_Click" Margin="0,0,0,10"/>
+        <Grid HorizontalAlignment="Left" Height="41" Margin="0,228,0,0" VerticalAlignment="Top" Width="302" Background="#FF646464">
+            <Button x:Name="applyBtn" Content="Apply" Style="{DynamicResource RoundBlueButton}" Click="applyBtn_Click" Width="40" Height="20" Margin="252,11,10,10"/>
+        </Grid>
 
     </Grid>
 </Window>

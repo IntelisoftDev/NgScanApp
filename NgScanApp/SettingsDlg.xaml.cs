@@ -27,6 +27,7 @@ namespace NgScanApp
         private string vendor = "";
         private string local_appData = "";
         public string ScannerSettings = "";
+
         public SettingsDlg()
         {
             InitializeComponent();
@@ -36,8 +37,10 @@ namespace NgScanApp
             ScannerSettings = local_appData + "ScannerSettings.settings";
             readSettings();
         }
+
         public class scanSettings
         {
+            public int bpp { get; set; }
             public int brightness { get; set; }
             public int colorMode { get; set; }
             public int contrast { get; set; }
@@ -51,15 +54,35 @@ namespace NgScanApp
         private void readSettings()
         {
             scanSettings _scanSettings = new scanSettings();
-            string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
-            "DPI: " + _scanSettings.dpi, "Width: " + _scanSettings.wInch, "Height: " + _scanSettings.hInch, "Crop X: " + _scanSettings.cropX,
-            "Crop Y: " + _scanSettings.cropY};
-            System.IO.File.WriteAllLines(ScannerSettings, allSettings);
+            /*string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
+            "DPI: " + _scanSettings.dpi};
+                System.IO.File.WriteAllLines(ScannerSettings, allSettings);*/
 
             if (File.Exists(ScannerSettings))
             {
                 //scanSettings _scanSettings = new scanSettings();
                 {
+                    _scanSettings.bpp = (int)parseSettings("Bpp");
+                    if (_scanSettings.bpp == 1)
+                    {
+                        bpp1Rb.IsChecked = true;
+                        colModeCmb.SelectedIndex = 0;
+                    }
+                    if (_scanSettings.bpp == 8)
+                    {
+                        bpp8Rb.IsChecked = true;
+                        colModeCmb.SelectedIndex = 2;
+                    }
+                    if (_scanSettings.bpp == 24)
+                    {
+                        bpp24Rb.IsChecked = true;
+                        colModeCmb.SelectedIndex = 1;
+                    }
+                    if (_scanSettings.bpp == 32)
+                    {
+                        bpp32Rb.IsChecked = true;
+                        colModeCmb.SelectedIndex = 1;
+                    }
                     _scanSettings.colorMode = (int)parseSettings("Color Mode");
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
@@ -81,14 +104,29 @@ namespace NgScanApp
 
         private void saveSettings()
         {
-
             scanSettings _scanSettings = new scanSettings();
+            if (bpp1Rb.IsChecked == true)
+            {
+                _scanSettings.bpp = 1;
+            }
+            if (bpp8Rb.IsChecked == true)
+            {
+                _scanSettings.bpp = 8;
+            }
+            if (bpp24Rb.IsChecked == true)
+            {
+                _scanSettings.bpp = 24;
+            }
+            if (bpp32Rb.IsChecked == true)
+            {
+                _scanSettings.bpp = 32;
+            }
             _scanSettings.colorMode = colModeCmb.SelectedIndex;
             _scanSettings.brightness = (int)brightSl.Value;
             _scanSettings.contrast = (int)contrastSl.Value;
-
             _scanSettings.dpi = (int)parseSettings("DPI");
-            string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
+
+            string[] allSettings = {"Bpp: " + _scanSettings.bpp ,"Brightness: " + _scanSettings.brightness, "Color Mode: " + _scanSettings.colorMode, "Contrast: " + _scanSettings.contrast,
             "DPI: " + _scanSettings.dpi};
             System.IO.File.WriteAllLines(ScannerSettings, allSettings);
         }

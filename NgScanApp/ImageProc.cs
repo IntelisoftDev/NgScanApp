@@ -35,6 +35,23 @@ namespace NgScanApp
             return bmp;
         }
 
+        public static System.Drawing.Bitmap BmpSource2Img(BitmapSource bmpsource)
+        {
+            //convert image format
+            var src = new System.Windows.Media.Imaging.FormatConvertedBitmap();
+            src.BeginInit();
+            src.Source = bmpsource;
+            src.EndInit();
+
+            //copy to bitmap
+            Bitmap bitmap = new Bitmap(src.PixelWidth, src.PixelHeight, System.Drawing.Imaging.PixelFormat.DontCare);
+            var data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.DontCare);
+            src.CopyPixels(System.Windows.Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+
+            return bitmap;
+        }
+
         public static System.Drawing.Bitmap setPixelFormat2(BitmapSource bitmapsource, System.Drawing.Imaging.PixelFormat format)
         {
             //convert image format
@@ -53,9 +70,9 @@ namespace NgScanApp
             {
                 src.DestinationFormat = System.Windows.Media.PixelFormats.Bgr24;
             }
-            if (format == System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+            if (format == System.Drawing.Imaging.PixelFormat.Format32bppRgb)
             {
-                src.DestinationFormat = System.Windows.Media.PixelFormats.Bgra32;
+                src.DestinationFormat = System.Windows.Media.PixelFormats.Bgr32;
             }
             src.EndInit();
 

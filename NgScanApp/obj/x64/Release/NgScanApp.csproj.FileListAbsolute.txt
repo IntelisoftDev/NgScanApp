@@ -19,3 +19,31 @@ C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp
 C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.exe
 C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.pdb
 C:\Users\vidar.EDOCNY2\documents\visual studio 2015\Projects\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.csprojResolveAssemblyReference.cache
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\NgScanApp.exe.config
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\Interop.WIA.dll
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.csproj.ResolveComReference.cache
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.exe
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.pdb
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\NgScanApp.exe
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\NgScanApp.pdb
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.dll
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.Imaging.dll
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.Math.dll
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.xml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.Imaging.xml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\AForge.Math.xml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\bin\x64\Release\Interop.WIA.dll
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.csprojResolveAssemblyReference.cache
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\MainWindow.g.cs
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\mSlider.g.cs
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\SettingsDlg.g.cs
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\App.g.cs
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp_MarkupCompile.cache
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp_MarkupCompile.lref
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\Decorations.baml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\MainWindow.baml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\mSlider.baml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\SettingsDlg.baml
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.g.resources
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.Properties.Resources.resources
+C:\Users\Andrew Howson\Documents\GitHub\NgScanApp\NgScanApp\obj\x64\Release\NgScanApp.csproj.GenerateResource.Cache

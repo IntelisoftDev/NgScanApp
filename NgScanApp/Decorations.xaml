@@ -67,7 +67,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Border Background="White" BorderBrush="Black" BorderThickness="1.5" CornerRadius="5,0,0,0">
+                            <Border Background="White" BorderBrush="#FF333333" BorderThickness="1.5" CornerRadius="5,0,0,0">
                                 <ContentPresenter Content="{Binding Path=Header, RelativeSource={RelativeSource FindAncestor,AncestorType=TabItem,AncestorLevel=1}}"/>
                             </Border>
                         </ControlTemplate>
@@ -164,7 +164,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="#993A97D4"/>
+                            <Setter TargetName="Border" Property="Background" Value="#996BB0E0"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -277,6 +277,22 @@
                                 <Thumb Style="{StaticResource SliderThumbStyle}" />
                             </Track.Thumb>
                         </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RoundBlueButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle Fill="#FF6BB0E0" Stroke="#FF6BB0E0" Width="40" Height="20" RadiusX="5" RadiusY="5" />
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

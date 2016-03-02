@@ -38,6 +38,7 @@ namespace NgScanApp
         private TranslateTransform transform = new TranslateTransform();
         private class scanSettings
         {
+            public int bpp { get; set; }
             public int brightness { get; set; }
             public int colorMode { get; set; }
             public int contrast { get; set; }
@@ -71,24 +72,23 @@ namespace NgScanApp
             if (!File.Exists(ScannerSettings))
             {
                 scanSettings _scanSettings = new scanSettings();
+                _scanSettings.bpp = 8;
                 _scanSettings.dpi = 300;
-                _scanSettings.cropX = 0;
-                _scanSettings.cropY = 0;
                 _scanSettings.colorMode = 0;
                 if (!Directory.Exists(local_appData))
                 {
                     Directory.CreateDirectory(userProfile + "\\AppData\\Roaming\\" + vendor + "\\");
                     Directory.CreateDirectory(local_appData);
                 }
-                string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
-            "DPI: " + _scanSettings.dpi, "Width: " + _scanSettings.wInch, "Height: " + _scanSettings.hInch, "Crop X: " + _scanSettings.cropX,
-            "Crop Y: " + _scanSettings.cropY};
+                string[] allSettings = {"Bpp: " + _scanSettings.bpp ,"Brightness: " + _scanSettings.brightness, "Color Mode: " + _scanSettings.colorMode, "Contrast: " + _scanSettings.contrast,
+            "DPI: " + _scanSettings.dpi};
                 System.IO.File.WriteAllLines(ScannerSettings, allSettings);
             }
             if (File.Exists(ScannerSettings))
             {
                 scanSettings _scanSettings = new scanSettings();
                 {
+                    _scanSettings.bpp = (int)parseSettings("Bpp");
                     _scanSettings.colorMode = (int)parseSettings("Color Mode");
                     _scanSettings.brightness = (int)parseSettings("Brightness");
                     _scanSettings.contrast = (int)parseSettings("Contrast");
@@ -112,6 +112,7 @@ namespace NgScanApp
         {
             SettingsDlg settingsdlg = new SettingsDlg();
             scanSettings _scanSettings = new scanSettings();
+            _scanSettings.bpp = (int)parseSettings("Bpp");
             _scanSettings.colorMode = (int)parseSettings("Color Mode");
             _scanSettings.brightness = (int)parseSettings("Brightness");
             _scanSettings.contrast = (int)parseSettings("Contrast");
@@ -120,7 +121,7 @@ namespace NgScanApp
             {
                 _scanSettings.dpi = Convert.ToInt32(dpiTxt.Text);
             }
-            string[] allSettings = {"Color Mode: " + _scanSettings.colorMode, "Brightness: " + _scanSettings.brightness, "Contrast: " + _scanSettings.contrast,
+            string[] allSettings = {"Bpp: " + _scanSettings.bpp ,"Brightness: " + _scanSettings.brightness, "Color Mode: " + _scanSettings.colorMode, "Contrast: " + _scanSettings.contrast,
             "DPI: " + _scanSettings.dpi};
             System.IO.File.WriteAllLines(ScannerSettings, allSettings);
         }
@@ -249,6 +250,8 @@ namespace NgScanApp
         {
             InitScan();
             CropToolReady = false;
+            PvCanvas.Visibility = Visibility.Hidden;
+            CropCbx.IsChecked = false;
         }
         public void InitScan()
         {
@@ -272,15 +275,26 @@ namespace NgScanApp
                 selRect.Visibility = Visibility.Collapsed;
                 foreach (System.Drawing.Image image in images)
                 {
-                    if ((int)parseSettings("Color Mode") == 0)
+                    if ((int)parseSettings("Bpp") == 1)
                     {
                         ScanView.Source = ImageProc.setPixelFormat1(ImageProc.ImgToBmpSource(image), PixelFormats.BlackWhite);
                         saveImageAsFile(ImageProc.setPixelFormat2(ImageProc.ImgToBmpSource(image), System.Drawing.Imaging.PixelFormat.Format1bppIndexed));
                     }
-                    else
+                    if ((int)parseSettings("Bpp") == 8)
                     {
-                        ScanView.Source = ImageProc.ImgToBmpSource(image);
-                        saveImageAsFile(image);
+                        BitmapSource img8bit = ImageProc.setPixelFormat1(ImageProc.ImgToBmpSource(image), PixelFormats.Gray8);
+                        ScanView.Source = img8bit;
+                        saveImageAsFile(ImageProc.BmpSource2Img(img8bit));
+                    }
+                    if ((int)parseSettings("Bpp") == 24)
+                    {
+                        ScanView.Source = ImageProc.setPixelFormat1(ImageProc.ImgToBmpSource(image), PixelFormats.Bgr24);
+                        saveImageAsFile(ImageProc.setPixelFormat2(ImageProc.ImgToBmpSource(image), System.Drawing.Imaging.PixelFormat.Format24bppRgb));
+                    }
+                    if ((int)parseSettings("Bpp") == 32)
+                    {
+                        ScanView.Source = ImageProc.setPixelFormat1(ImageProc.ImgToBmpSource(image), PixelFormats.Bgr32);
+                        saveImageAsFile(ImageProc.setPixelFormat2(ImageProc.ImgToBmpSource(image), System.Drawing.Imaging.PixelFormat.Format32bppRgb));
                     }
                 }
 
@@ -294,8 +308,10 @@ namespace NgScanApp
         private void previewBtnClicked(object sender, RoutedEventArgs e)
         {
             previewScan();
+            ScanView.Source = null;
             selRect.Visibility = Visibility.Visible;
-            CropToolReady = true;
+            PvCanvas.Visibility = Visibility.Visible;
+            CropCbx.IsChecked = true;
         }
         private void previewScan()
         {
@@ -328,7 +344,7 @@ namespace NgScanApp
                     bc.FilterBlobs = true;
                     bc.ProcessImage(gs_Bmp);
                     System.Drawing.Rectangle[] rects = bc.GetObjectsRectangles();*/
-                    ScanView.Source = ImageProc.ImgToBmpSource(img);
+                    PreView.Source = ImageProc.ImgToBmpSource(img);
                     //gs_Bmp.Save(userProfile + "\\Pictures\\TreshSample1.png", ImageFormat.Png);
                     /* foreach (System.Drawing.Rectangle rect in rects)
                      {
@@ -383,8 +399,8 @@ namespace NgScanApp
             this.MouseMove += new MouseEventHandler(Window1_MouseMove);
             this.MouseLeave += new MouseEventHandler(Window1_MouseLeave);
 
-            CanvasL.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(myCanvas_PreviewMouseLeftButtonDown);
-            CanvasL.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(DragFinishedMouseHandler);
+            PvCanvas.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(myCanvas_PreviewMouseLeftButtonDown);
+            PvCanvas.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(DragFinishedMouseHandler);
         }
 
         // Handler for drag stopping on leaving the window
@@ -417,13 +433,13 @@ namespace NgScanApp
             if (_isDown)
             {
                 if ((_isDragging == false) &&
-                    ((Math.Abs(e.GetPosition(CanvasL).X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
-                    (Math.Abs(e.GetPosition(CanvasL).Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)))
+                    ((Math.Abs(e.GetPosition(PvCanvas).X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance) ||
+                    (Math.Abs(e.GetPosition(PvCanvas).Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)))
                     _isDragging = true;
 
                 if (_isDragging)
                 {
-                    System.Windows.Point position = Mouse.GetPosition(CanvasL);
+                    System.Windows.Point position = Mouse.GetPosition(PvCanvas);
                     Canvas.SetTop(selectedElement, position.Y - (_startPoint.Y - _originalTop));
                     Canvas.SetLeft(selectedElement, position.X - (_startPoint.X - _originalLeft));
                 }
@@ -461,10 +477,10 @@ namespace NgScanApp
 
             // If any element except canvas is clicked, 
             // assign the selected element and add the adorner
-            if (e.Source != CanvasL)
+            if (e.Source != PvCanvas)
             {
                 _isDown = true;
-                _startPoint = e.GetPosition(CanvasL);
+                _startPoint = e.GetPosition(PvCanvas);
 
                 selectedElement = e.Source as UIElement;
 
@@ -480,15 +496,18 @@ namespace NgScanApp
 
         private void getCropVal()
         {
-            widthTxt.Text = Math.Round(((selRect.Width) / 18.23), 2).ToString();
-            cropxTxt.Text = Math.Round(((Canvas.GetLeft(selRect)) * 15), 2).ToString();
-            cropyTxt.Text = Math.Round(((Canvas.GetTop(selRect)) / 19), 2).ToString();
-            heightTxt.Text = Math.Round(((Canvas.GetTop(selRect) + selRect.Height) / 19), 2).ToString();
+            if (DeviceCmb.SelectedItem.ToString().Contains("Vidar"))
+            {
+                widthTxt.Text = Math.Round(((selRect.Width)) / 11.76, 2).ToString();
+                cropxTxt.Text = Math.Round(((Canvas.GetLeft(selRect))) * 24.75, 2).ToString();
+                cropyTxt.Text = Math.Round(((Canvas.GetTop(selRect))), 2).ToString();
+                heightTxt.Text = Math.Round(((Canvas.GetTop(selRect) + selRect.Height)) / 10.73, 2).ToString();
+            }
         }
 
         private void CanvasMouseMove(object sender, MouseEventArgs e)
         {
-            System.Windows.Point mousePosition = e.GetPosition(CanvasL);
+            System.Windows.Point mousePosition = e.GetPosition(PvCanvas);
             posLbn.Content = "X: " + mousePosition.X + " Y: " + mousePosition.Y;
         }
 
@@ -536,6 +555,11 @@ namespace NgScanApp
         {
             SettingsDlg settingsDlg = new SettingsDlg();
             settingsDlg.Show();
+        }
+
+        private void CropCbxChecked(object sender, RoutedEventArgs e)
+        {
+            CropToolReady = true;
         }
     }
 }

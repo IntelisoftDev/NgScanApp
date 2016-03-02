@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded">
+        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded" Icon="AppIcon.ICO">
     <Window.Resources>
         <ResourceDictionary Source="Decorations.xaml"/>
     </Window.Resources>
     <Grid Background="White">
         <Grid x:Name="GridR" Width="281" Background="White" Margin="0,2,3,0" HorizontalAlignment="Right">
-            <Grid Width="200" Height="158" Margin="45,26,36,0" VerticalAlignment="Top">
-                <Button x:Name="ScanBtn" Height="60" Style="{DynamicResource NoChromeButton}" Width="63" Background="{x:Null}" Margin="10,13,127,85" Click="ScanBtnClicked" BorderBrush="{x:Null}">
+            <Grid Width="200" Height="179" Margin="45,26,36,0" VerticalAlignment="Top">
+                <Button x:Name="ScanBtn" Height="60" Style="{DynamicResource NoChromeButton}" Width="63" Background="{x:Null}" Click="ScanBtnClicked" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Grid Width="48" Height="48">
                         <Image Source="CamIco.png" Width="48" Height="48" VerticalAlignment="Bottom"/>
                     </Grid>
@@ -20,11 +20,12 @@
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
                 <ComboBox x:Name="DeviceCmb" Style="{DynamicResource FancyCombo}" HorizontalAlignment="Center" Margin="10,115,70,0" VerticalAlignment="Top" Width="120"/>
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
-                <Button x:Name="refreshBtn" Height="30" Width="30"  Margin="143,110,27,18" Background="{x:Null}" BorderBrush="{x:Null}"></Button>
-                <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" 
-                        HorizontalAlignment="Left" Margin="98,21,0,0" VerticalAlignment="Top" Width="45" Click="previewBtnClicked">
-                    <Grid>
-                        <Image Source="Preview.png" Height="40" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                <Button x:Name="refreshBtn" Height="30"  Margin="10,65,98,84" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <CheckBox x:Name="CropCbx" Content="Crop Tool" Checked="CropCbxChecked"/>
+                </Button>
+                <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" Margin="98,21,0,0" VerticalAlignment="Top" Width="45" Click="previewBtnClicked">
+                    <Grid Width="55" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="Preview.png" Height="35" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
                     </Grid>
                 </Button>
             </Grid>
@@ -49,7 +50,7 @@
                     <TextBox x:Name="dpiTxt" Text="{Binding dpi, UpdateSourceTrigger=Default}" Height="17" Width="42" Margin="129,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBox>
                 </Grid>
             </GroupBox>
-            <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,226,0,0" VerticalAlignment="Top" Foreground="Black"/>
+            <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,232,0,0" VerticalAlignment="Top" Foreground="Black"/>
             <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,550,0,0" VerticalAlignment="Top" Height="89" Width="237" Foreground="Black" BorderBrush="#FF6BB0E0" BorderThickness="2">
                 <Grid>
                     <Button x:Name="rotL" Style="{DynamicResource NoChromeButton}"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="40" Click="rotL_Click">
@@ -69,15 +70,23 @@
                 <ComboBoxItem Content="RLE"/>
                 <ComboBoxItem Content="ZIP"/>
             </ComboBox>
-            <Button x:Name="applyBtn" Content="Apply" HorizontalAlignment="Right" VerticalAlignment="Top" Width="74" Click="applyBtn_Click" Margin="0,520,36,0"/>
-            <Button x:Name="settingsBtn" Content="Settings" HorizontalAlignment="Left" Margin="170,666,0,0" VerticalAlignment="Top" Width="75" Click="settingsBtn_Click"/>
+            <Button x:Name="applyBtn" Content="Apply" Style="{DynamicResource RoundBlueButton}" HorizontalAlignment="Center" VerticalAlignment="Top" Click="applyBtn_Click" Margin="185,515,36,0"/>
+            <Button x:Name="settingsBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Left" Margin="170,666,0,0" VerticalAlignment="Top" Width="75" Click="settingsBtn_Click">
+                <Grid>
+                    <Image Source="SettingsIco.png" Width="30" Height="30" />
+                </Grid>
+            </Button>
 
         </Grid>
         <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="White">
-            <Canvas x:Name="CanvasL" Background="White" MouseMove="CanvasMouseMove" Margin="0,10,27,10">
+            <Canvas x:Name="CanvasL" Background="White">
                 <Image x:Name="ScanView" Height="875"/>
-                <Rectangle x:Name="selRect" Fill="#7F385681" Width="840" Height="798" Canvas.Left="20" SizeChanged="RectSizeChange" RenderTransformOrigin="0.5,0.5" Canvas.Top="20" Visibility="Hidden" >
-                </Rectangle>
+            </Canvas>
+            <Canvas x:Name="PvCanvas" Width="500" Height="500" Background="White" MouseMove="CanvasMouseMove">
+                <Image x:Name="PreView" Width="500" Height="500" Canvas.Left="-4"/>
+                <Border BorderBrush="Black" Width="500" Height="500" BorderThickness="1" Canvas.Left="-4"/>
+                <Rectangle x:Name="selRect" Fill="#7F385681" Width="300" Height="300" SizeChanged="RectSizeChange" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="104" Canvas.Top="104" Visibility="Hidden"/>
+                <Label x:Name="label1" Content="Preview" Canvas.Left="14" Canvas.Top="10" Foreground="#99505050" FontSize="21.333" FontWeight="Bold"/>
             </Canvas>
         </Grid>
         <Border BorderBrush="#FF969696" BorderThickness="0.01" HorizontalAlignment="Left" Height="527" Margin="1623,270,0,0" VerticalAlignment="Top" Width="2" CornerRadius="5">
