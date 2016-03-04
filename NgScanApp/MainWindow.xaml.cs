@@ -128,6 +128,8 @@ namespace NgScanApp
 
         private void getDevices()
         {
+            DeviceCmb.Items.Clear();
+            DeviceIdCmb.Items.Clear();
             try
             {
                 List<string> devices = WIAScanner.GetDevices();
@@ -560,6 +562,11 @@ namespace NgScanApp
         private void CropCbxChecked(object sender, RoutedEventArgs e)
         {
             CropToolReady = true;
+        }
+
+        private void RefreshBtnClicked(object sender, RoutedEventArgs e)
+        {
+            getDevices();
         }
     }
 }

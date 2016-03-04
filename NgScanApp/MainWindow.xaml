@@ -20,7 +20,7 @@
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="112,110,108,0"/>
                 <ComboBox x:Name="DeviceCmb" Style="{DynamicResource FancyCombo}" HorizontalAlignment="Center" Margin="10,115,70,0" VerticalAlignment="Top" Width="120"/>
                 <ComboBox x:Name="DeviceIdCmb" HorizontalAlignment="Left" Margin="53,173,0,0" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
-                <Button x:Name="refreshBtn" Height="30"  Margin="10,65,98,84" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button x:Name="ReadyCropBtn" Height="30"  Margin="10,65,98,84" Background="{x:Null}" BorderBrush="{x:Null}">
                     <CheckBox x:Name="CropCbx" Content="Crop Tool" Checked="CropCbxChecked"/>
                 </Button>
                 <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" Margin="98,21,0,0" VerticalAlignment="Top" Width="45" Click="previewBtnClicked">
@@ -53,11 +53,11 @@
             <Label x:Name="label" Content="Save Image" HorizontalAlignment="Left" Margin="100,232,0,0" VerticalAlignment="Top" Foreground="Black"/>
             <GroupBox x:Name="groupBox" Header="Rotation" HorizontalAlignment="Left" Margin="11,550,0,0" VerticalAlignment="Top" Height="89" Width="237" Foreground="Black" BorderBrush="#FF6BB0E0" BorderThickness="2">
                 <Grid>
-                    <Button x:Name="rotL" Style="{DynamicResource NoChromeButton}"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="40" Click="rotL_Click">
+                    <Button x:Name="rotL" Style="{DynamicResource NoChromeButton}"  HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="35" Click="rotL_Click">
                         <Image Source="rotateL.png" VerticalAlignment="Top"/>
                     </Button>
-                    <Button x:Name="rotR" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Margin="0,25,10,0" Click="rotR_Click">
-                        <Image Source="rotateR.png"/>
+                    <Button x:Name="rotR" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Margin="0,25,10,0" Click="rotR_Click">
+                        <Image Source="rotateR.png" VerticalAlignment="Top"/>
                     </Button>
                 </Grid>
             </GroupBox>
@@ -76,6 +76,11 @@
                     <Image Source="SettingsIco.png" Width="30" Height="30" />
                 </Grid>
             </Button>
+            <Button x:Name="refreshBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Left" Margin="194,144,0,0" VerticalAlignment="Top" Width="20" Click="RefreshBtnClicked">
+                <Grid>
+                    <Image Source="refresh-512px.png" HorizontalAlignment="Center" />
+                </Grid>
+            </Button>
 
         </Grid>
         <Grid x:Name="GridL" Height="1049" Margin="0,0,289,0" Background="White">
@@ -83,8 +88,8 @@
                 <Image x:Name="ScanView" Height="875"/>
             </Canvas>
             <Canvas x:Name="PvCanvas" Width="500" Height="500" Background="White" MouseMove="CanvasMouseMove">
-                <Image x:Name="PreView" Width="500" Height="500" Canvas.Left="-4"/>
-                <Border BorderBrush="Black" Width="500" Height="500" BorderThickness="1" Canvas.Left="-4"/>
+                <Image x:Name="PreView" Width="500" Height="500" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Border BorderBrush="Black" Width="500" Height="500" BorderThickness="1"/>
                 <Rectangle x:Name="selRect" Fill="#7F385681" Width="300" Height="300" SizeChanged="RectSizeChange" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="104" Canvas.Top="104" Visibility="Hidden"/>
                 <Label x:Name="label1" Content="Preview" Canvas.Left="14" Canvas.Top="10" Foreground="#99505050" FontSize="21.333" FontWeight="Bold"/>
             </Canvas>
