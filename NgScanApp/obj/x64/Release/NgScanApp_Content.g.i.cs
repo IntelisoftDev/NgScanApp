@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("appicon.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("appico.ico")]
 
 

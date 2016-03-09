@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NgScanApp"
         mc:Ignorable="d"
-        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded" Icon="AppIcon.ICO">
+        Title="NgScanApp" WindowState="Maximized" Width="1920" Height="1080" Loaded="Window_Loaded" Icon="AppIco.ico">
     <Window.Resources>
         <ResourceDictionary Source="Decorations.xaml"/>
     </Window.Resources>

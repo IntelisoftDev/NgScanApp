@@ -71,7 +71,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>AppIcon.ICO</ApplicationIcon>
+    <ApplicationIcon>AppIco.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
@@ -212,10 +212,10 @@
     <Resource Include="SettingsIco.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="AppIcon.ICO" />
+    <Resource Include="refresh-512px.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="refresh-512px.png" />
+    <Resource Include="AppIco.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
