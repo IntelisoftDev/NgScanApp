@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="800.000000pt"
+   height="600.000000pt"
+   viewBox="0 0 800.000000 600.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="SaveFile.svg">
+  <defs
+     id="defs28" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview26"
+     showgrid="false"
+     inkscape:zoom="0.73"
+     inkscape:cx="24.894068"
+     inkscape:cy="375"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <metadata
+     id="metadata4">
+Created by potrace 1.13, written by Peter Selinger 2001-2015
+<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title></dc:title>
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     transform="translate(0.000000,600.000000) scale(0.100000,-0.100000)"
+     fill="#000000"
+     stroke="none"
+     id="g6"
+     style="fill:#333333;fill-opacity:1"
+     inkscape:export-filename="C:\Users\vidar.EDOCNY2\Documents\Visual Studio 2015\Projects\NgScanApp\NgScanApp\SaveFile.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90">
+    <path
+       d="M1610 2980 l0 -2900 2400 0 2400 0 0 1111 0 1110 -100 -53 -100 -53 0 -957 0 -958 -2200 0 -2200 0 0 2700 0 2700 1806 0 1807 0 -7 -312 c-8 -353 -4 -381 59 -455 81 -95 185 -118 507 -111 l228 5 0 -873 c0 -643 3 -874 11 -874 7 0 52 21 100 47 l89 47 0 1063 0 1064 -37 32 c-21 18 -125 110 -233 206 -242 215 -391 338 -425 351 -17 7 -727 10 -2066 10 l-2039 0 0 -2900z m4146 2607 c61 -50 188 -161 282 -246 l172 -153 0 -88 0 -87 -82 -6 c-46 -4 -153 -7 -239 -7 -170 0 -250 15 -269 50 -15 27 -1 630 14 630 6 0 61 -42 122 -93z"
+       id="path8"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M3245 5330 c-965 -4 -1225 -8 -1242 -18 -24 -14 -53 -61 -53 -87 0 -26 29 -74 53 -87 28 -15 2570 -13 2629 3 71 18 97 83 58 146 -23 39 -70 54 -160 51 -36 -2 -614 -5 -1285 -8z"
+       id="path10"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M3845 4706 c-1469 -9 -1855 -14 -1872 -24 -24 -14 -53 -61 -53 -87 0 -32 32 -77 63 -89 26 -10 410 -11 1902 -4 1029 5 1890 11 1914 14 55 7 101 49 101 91 0 72 -61 115 -160 111 -25 -1 -877 -6 -1895 -12z"
+       id="path12"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M3885 4056 c-1469 -9 -1855 -14 -1872 -24 -24 -14 -53 -61 -53 -87 0 -32 32 -77 63 -89 26 -10 410 -11 1902 -4 1029 5 1890 11 1914 14 55 7 101 49 101 91 0 72 -61 115 -160 111 -25 -1 -877 -6 -1895 -12z"
+       id="path14"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M3915 3446 c-1469 -9 -1855 -14 -1872 -24 -24 -14 -53 -61 -53 -87 0 -32 32 -77 63 -89 26 -10 410 -11 1902 -4 1029 5 1890 11 1914 14 55 7 101 49 101 91 0 72 -61 115 -160 111 -25 -1 -877 -6 -1895 -12z"
+       id="path16"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M7335 3374 c-11 -3 -46 -12 -78 -21 -51 -14 -58 -19 -53 -38 6 -24 214 -526 220 -533 11 -11 102 36 146 75 66 59 94 126 94 223 0 88 -23 145 -82 205 -60 61 -178 103 -247 89z"
+       id="path18"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M5845 2838 c-720 -264 -1311 -482 -1313 -483 -2 -2 43 -129 99 -283 l102 -280 66 23 c415 150 2574 944 2578 949 5 5 -191 496 -216 542 -4 8 -452 -152 -1316 -468z"
+       id="path20"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M3770 2930 c-807 -4 -1030 -8 -1047 -18 -24 -14 -53 -61 -53 -87 0 -26 29 -74 53 -87 28 -15 2150 -13 2209 3 71 18 97 83 58 146 -22 37 -70 54 -145 51 -27 -2 -511 -5 -1075 -8z"
+       id="path22"
+       style="fill:#333333;fill-opacity:1" />
+    <path
+       d="M4415 2258 c-39 -40 -143 -149 -233 -242 -89 -93 -161 -171 -159 -172 6 -7 72 -14 521 -60 82 -8 151 -13 153 -10 3 3 -25 80 -82 226 -8 19 -34 89 -60 155 -25 66 -51 133 -58 148 l-12 28 -70 -73z"
+       id="path24"
+       style="fill:#333333;fill-opacity:1" />
+  </g>
+</svg>

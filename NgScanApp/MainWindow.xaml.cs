@@ -500,7 +500,7 @@ namespace NgScanApp
         {
             if (DeviceCmb.SelectedItem.ToString().Contains("Vidar"))
             {
-                widthTxt.Text = Math.Round(((selRect.Width)) / 11.76, 2).ToString();
+                widthTxt.Text = Math.Round(((selRect.Width)) / 10.00, 2).ToString();
                 cropxTxt.Text = Math.Round(((Canvas.GetLeft(selRect))) * 24.75, 2).ToString();
                 cropyTxt.Text = Math.Round(((Canvas.GetTop(selRect))), 2).ToString();
                 heightTxt.Text = Math.Round(((Canvas.GetTop(selRect) + selRect.Height)) / 10.73, 2).ToString();

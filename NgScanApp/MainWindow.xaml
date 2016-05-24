@@ -23,16 +23,16 @@
                 <Button x:Name="ReadyCropBtn" Height="30"  Margin="10,65,98,84" Background="{x:Null}" BorderBrush="{x:Null}">
                     <CheckBox x:Name="CropCbx" Content="Crop Tool" Checked="CropCbxChecked"/>
                 </Button>
-                <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" Margin="98,21,0,0" VerticalAlignment="Top" Width="45" Click="previewBtnClicked">
-                    <Grid Width="55" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="Preview.png" Height="35" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                <Button x:Name="previewBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="42" Height="42" Click="previewBtnClicked" Margin="0,9,0,0">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="Preview.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Grid>
                 </Button>
             </Grid>
             <TextBox x:Name="savePathTxt" Text="{Binding savePath, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="38" Margin="11,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237" BorderBrush="#FF6BB0E0" BorderThickness="2" SelectionBrush="#FF6BB0E0" TextChanged="SaveTextChanged"/>
-            <Button x:Name="browseBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Left" Margin="25,305,0,0" VerticalAlignment="Top" Width="45" Click="saveBtn_Click">
+            <Button x:Name="browseBtn" Style="{DynamicResource NoChromeButton}" HorizontalAlignment="Left" Margin="25,305,0,0" VerticalAlignment="Top" Width="45" Height="45" Click="saveBtn_Click">
                 <StackPanel>
-                    <Image Source="save.png" Width="30" Height="20"></Image>
+                    <Image Source="save.png" Width="40" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
                     <Label Content="Save"></Label>
                 </StackPanel>
             </Button>
